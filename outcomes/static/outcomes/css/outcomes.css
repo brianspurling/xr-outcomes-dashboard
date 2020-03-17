@@ -1,0 +1,277 @@
+@font-face {
+    font-family: "FucXed";
+    font-style: normal;
+    font-weight: normal;
+    src:url('../fonts/fucxedcaps-v2.otf') format("opentype");
+}
+
+body {
+    background: #14AA37;
+    margin: 5px;
+    padding-left: 30px;
+    display: grid;
+    grid-gap: 0.2vw;
+    height: 100vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: 140px 1fr 61px;
+    grid-template-areas: "header"
+                         "content"
+                         "footer";
+}
+
+div.header {
+    grid-area: header;
+    display: grid;
+    grid-gap: 0.2vw;
+    grid-template-columns: 500px 300px;
+    grid-template-rows: 1fr;
+    grid-template-areas: "header_title header_logo";
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+
+div.content {
+    grid-area: content;
+}
+
+div.footer {
+    grid-area: footer;
+}
+
+div.summary-grid {
+  display: grid;
+  grid-gap: 3.5vw;
+  grid-template-columns: 800px 1fr;
+  grid-template-rows: 1fr;
+}
+
+div.kpi-grid {
+  display: grid;
+  grid-gap: 3.5vw;
+  grid-template-columns: repeat(2, fit-content(40%));
+  grid-template-rows: auto;
+  margin-top: 40px;
+  max-height: 400px;
+}
+
+div.summary_page_image {
+  margin-top: 100px;
+  opacity: 0.8;
+}
+
+span.kpi-title {
+  font-family: FucXed;
+  color: black;
+  font-size: 22pt;
+  vertical-align: top;
+  min-width: 500px;
+}
+
+span.kpi {
+  font-family: FucXed;
+  color: black;
+  font-size: 35pt;
+  white-space: nowrap;
+  vertical-align: top;
+  text-align: right;
+}
+
+/* Tooltips */
+
+.tooltip_label {
+    font-family: Crimson Text;
+    font-size: 12pt;
+    text-align: right;
+    white-space: nowrap;
+    padding: 5pt;
+}
+
+.tooltip_value {
+    font-family: Crimson Text;
+    font-size: 12pt;
+    text-align: left;
+    white-space: nowrap;
+    padding: 5pt;
+}
+
+/* Background Images */
+
+.background_image_div {
+    position: absolute;
+    top:10px;
+    z-index:-1;
+}
+
+.background_image {
+    opacity: 0.1;
+    height: 280pt;
+}
+
+/* Sometimes we put a sub-set of the inside tabs, and we use bokeh tabs
+   for this, so we need to override bokeh's sytling */
+
+.bk-root .bk-tabs-header .bk-tab {
+    background-color: #14AA37;
+    border-color: #14AA37;
+    color: black;
+    font-family: FucXed;
+    font-size: 15pt;
+    margin-bottom: 15px;
+}
+.bk-root .bk-tabs-header .bk-tab.bk-active {
+    background-color: #14AA37;
+    border-color: #14AA37;
+    color: black;
+    font-family: FucXed;
+    font-size: 25pt;
+}
+.bk-root .bk-tabs-header .bk-tab:hover {
+    background-color: #14AA37;
+    border-color: #14AA37;
+    color: black;
+    font-family: FucXed;
+    font-size: 25pt;
+}
+
+/* Dropdown List Styling */
+
+.bk .dropdown_list {
+    margin-bottom: 20px;
+    width: 260px;
+}
+.bk .dropdown_list select {
+    display: block;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: 700;
+    color: black;
+    line-height: 1.3;
+    padding: .6em 1.4em .5em .8em;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    border: 1px solid #aaa;
+    box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+    border-radius: .5em;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #ED9BC4;
+    background-repeat: no-repeat, repeat;
+    background-position: right .7em top 50%, 0 0;
+    background-size: .65em auto, 100%;
+    margin-top: 20px;
+}
+.bk .dropdown_list select::-ms-expand {
+    display: none;
+}
+.bk .dropdown_list select:hover {
+    border-color: #888;
+}
+.bk .dropdown_list select:focus {
+    border-color: #aaa;
+    box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+    box-shadow: 0 0 0 3px -moz-mac-focusring;
+    color: #222;
+    outline: none;
+}
+.bk .dropdown_list option {
+    font-weight:normal;
+}
+
+/* Slider styling */
+
+.bk-root .bk-slider-value {
+    font-family: Crimson Text;
+    font-size: 15pt;
+}
+
+.bk .commentary {
+  hyphens: auto;
+  display: block;
+  width: 430px;
+  height: 400px;
+  margin-left: 55px;
+  background-color: white;
+  font-family: Crimson Text;
+  font-size: 12pt;
+  padding: 25px;
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.header-title {
+    font-family: FucXed;
+    font-size: 60px;
+    color: black;
+    white-space: nowrap;
+}
+
+.chart-title {
+    font-family: FucXed;
+    font-size: 25px;
+    color: black;
+    margin-top: 50px;
+}
+
+div.chart {
+  margin-top: 35px;
+}
+
+.kpi-of {
+  font-size: 30px;
+}
+
+.coming-soon {
+    font-family: FucXed;
+    font-size: 60px;
+    color: black;
+    white-space: nowrap;
+}
+
+/* Override the Bootstrap nav-pills styling */
+
+ul.nav {
+  display: flex;
+  align-items: center;
+  width: 1000px;
+  white-space: nowrap;
+}
+
+.nav-pills {
+  margin-top: 47px;
+  border-bottom-color: black;
+  border-bottom: solid;
+  /*white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-height: 46px;*/
+}
+
+.nav-pills > li > a {
+  font-family: 'FucXed';
+  font-size: 15pt;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+  background-color: transparent;
+  color: black;
+}
+
+.nav > li > a,
+.nav > li > a:hover,
+.nav > li > a:focus {
+  background-color: transparent;
+  color: black;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus,
+.nav > li > a:hover,
+.nav > li > a:focus {
+  font-size: 33px;
+}

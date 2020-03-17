@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% load static %}
+
+  {% block meta %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% endblock %}
+
+  <title>{% block meta_title %}XR Outcomes Dashboard{% endblock %}</title>
+
+  {% block css_meta %}
+    {% block css_bootstrap %}
+      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    {% endblock %}
+    {% block css_fa %}
+      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    {% endblock %}
+    {% block css_outcomes %}
+      <link rel="stylesheet" href="{% static "css/outcomes.css" %}" type="text/css">
+    {% endblock %}
+
+  {% endblock %}
+  {% block js_meta %}
+  {% endblock %}
+
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">
+    <span>XR OUTCOMES</span>
+  </div>
+  <div class="header-logo">
+    <img src="{% static "images/XR-logo-RGB-Black-Linear.png" %}" height=100, width=300 >
+  </div>
+</div>
+
+<div class="content">
+
+  <ul class="nav nav-pills" style="overflow: hidden;">
+    <li class="active"><a href="#summary_tab" data-toggle="tab">Summary</a></li>
+    <li><a href="#truth_tab" data-toggle="tab">Tell the Truth</a></li>
+    <li><a href="#act_tab" data-toggle="tab">Act Now</a></li>
+    <li><a href="#politics_tab" data-toggle="tab">Beyond Politics</a></li>
+    <li><a href="#mobilisation_tab" data-toggle="tab">Mass Mobilisation</a></li>
+  </ul>
+
+  <div class="tab-content">
+
+    <div class="tab-pane active" id="summary_tab">
+      {% block summary_tab %}
+      {% endblock %}
+    </div>
+    <div class="tab-pane" id="truth_tab">
+      {% block truth_tab %}
+      {% endblock %}
+    </div>
+    <div class="tab-pane" id="act_tab">
+      {% block act_tab %}
+      {% endblock %}
+    </div>
+    <div class="tab-pane" id="politics_tab">
+      {% block politics_tab %}
+      {% endblock %}
+    </div>
+    <div class="tab-pane" id="mobilisation_tab">
+      {% block mobilisation_tab %}
+      {% endblock %}
+    </div>
+
+</div>
+
+<div class="footer">
+</div>
+
+{% block plot_scripts %}
+{% endblock %}
+
+{% block js %}
+  {% block js_jquery %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  {% endblock %}
+  {% block js_bootstrap %}
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  {% endblock %}
+  {% block js_bokeh %}
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-2.0.0.min.js"></script>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-2.0.0.min.js"></script>
+  {% endblock %}
+{% endblock %}
+
+</body>
+</html>

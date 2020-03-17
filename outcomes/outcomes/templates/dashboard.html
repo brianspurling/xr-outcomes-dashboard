@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block summary_tab %}
+  <div class="summary-grid">
+    <div class="kpi-grid">
+      <span class="kpi-title">
+        LOCAL AUTHORITIES DECLARING A CLIMATE EMERGENCY
+      </span>
+      <span class="kpi">
+        {{ kpi_las_declared }} <span class="kpi-of">of</span> {{ kpi_total_las }}
+      </span>
+      <span class="kpi-title">
+        LOCAL AUTHORITIES WITH A NET ZERO TARGET OF 2030 OR SOONER
+      </span>
+      <span class="kpi">
+        {{ kpi_las_with_2030_net_zero }} <span class="kpi-of">of</span> {{ kpi_total_las }}
+      </span>
+      <span class="kpi-title">
+        MAX WEBSITE USERS IN ONE DAY
+      </span>
+      <span class="kpi">
+        {{ kpi_max_website_users }}
+      </span>
+    </div>
+    <div class="summary_page_image">
+      <img src="{% static "images/skull-charcoal-sad.png" %}"  width="450" height="568">
+    </div>
+  </div>
+{% endblock %}
+
+{% block truth_tab %}
+  <div class="chart-title">{{ la_decs_title }}</div>
+  <div class="chart">{{ la_decs_plot | safe }}</div>
+  <div class="chart-title">{{ la_hex_map_title}}</div>
+  <div class="chart">{{ la_hex_map_plot | safe }}</div>
+{% endblock %}
+
+{% block act_tab %}
+  <div class="chart-title">{{ party_party_net_zero_title }}</div>
+  <div class="chart">{{ party_party_net_zero_plot | safe }}</div>
+  <div class="chart-title">{{ la_net_zero_title }}</div>
+  <div class="chart">{{ la_net_zero_plot | safe }}</div>
+{% endblock %}
+
+{% block politics_tab %}
+  <div class="coming-soon">Coming Soon</div>
+{% endblock %}
+
+{% block mobilisation_tab %}
+  <div class="chart-title">{{ website_title }}</div>
+  <div class="chart">{{ website_plot | safe }}</div>
+  <div class="chart-title">{{ social_media_title }}</div>
+  {{ social_media_tabs | safe }}
+  <div class="chart-title">{{ book_sales_title }}</div>
+  <div class="chart">{{ book_sales_plot | safe }}</div>
+  </div>
+  </div>
+{% endblock %}
+
+{% block plot_scripts %}
+  {{ script | safe }}
+{% endblock %}

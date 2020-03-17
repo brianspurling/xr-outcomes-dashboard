@@ -3,6 +3,32 @@ from django.templatetags.static import static
 import pandas as pd
 import numpy as np
 import os
+import boto3
+
+from .Conf import conf
+
+def loadCSV(filename, parse_dates=None):
+
+    if conf.AWS_ACCESS_KEY_ID == '':
+
+        print('No S3 creds found; reading ' + filename + ' from CSV')
+
+        df = pd.read_csv(
+            static('data/' + filename),
+            parse_dates=parse_dates,
+            dayfirst=True)
+
+    else:
+
+        print('Reading ' + filename + ' from S3 (' + conf.S3_BUCKET + ')')
+
+        df = pd.read_csv(
+            's3://' + conf.S3_BUCKET + '/' + filename + '.csv',
+            parse_dates=parse_dates,
+            dayfirst=True)
+
+    return df
+
 
 def processSocialMediaData(df, platform):
 

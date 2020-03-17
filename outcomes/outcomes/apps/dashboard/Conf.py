@@ -1,3 +1,7 @@
+from django.conf import settings
+
+from configobj import ConfigObj
+import os
 
 
 class Conf():
@@ -6,6 +10,32 @@ class Conf():
         pass
 
     def loadConfig(self):
+        configFilePath = os.path.join(settings.BASE_DIR, 'outcomes/apps/dashboard/config.ini')
+        self.confDict = dict(**ConfigObj(configFilePath))
+        for var in self.confDict:
+            setattr(Conf, var, self.confDict[var])
+
+        # We get our S3 creds from 1. environment variables, 2. config.ini
+        # If neither, set to None (and app will attempt to load from CSV)
+        if 'AWS_ACCESS_KEY_ID' not in os.environ or 'AWS_SECRET_ACCESS_KEY' not in os.environ or 'S3_BUCKET' not in os.environ:
+
+            if hasattr(self, 'AWS_ACCESS_KEY_ID') and hasattr(self, 'AWS_SECRET_ACCESS_KEY') and hasattr(self, 'S3_BUCKET'):
+
+                os.environ["AWS_ACCESS_KEY_ID"] = self.AWS_ACCESS_KEY_ID
+                os.environ["AWS_SECRET_ACCESS_KEY"] = self.AWS_SECRET_ACCESS_KEY
+                os.environ["S3_BUCKET"] = self.S3_BUCKET
+
+            else:
+
+                os.environ["AWS_ACCESS_KEY_ID"] = ''
+                os.environ["AWS_SECRET_ACCESS_KEY"] = ''
+                os.environ["S3_BUCKET"] = ''
+
+        self.AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
+        self.AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
+        self.S3_BUCKET = os.environ["S3_BUCKET"]
+
+        self.WARNINGS = []
 
         self.start_date_of_time_series = '2019-01-01'
 

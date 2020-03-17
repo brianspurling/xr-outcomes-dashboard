@@ -17,10 +17,9 @@ from . import commentary
 
 def laDeclarationsPlot():
 
-    df = pd.read_csv(
-        static('data/local_authorities.csv'),
-        parse_dates=['declaration_date'],
-        dayfirst=True)
+    df = chartData.loadCSV(
+        filename='local_authorities.csv',
+        parse_dates=['declaration_date'])
 
     df['declaration_date_str'] = \
         df.declaration_date.dt.strftime('%d %b %Y')
@@ -70,10 +69,9 @@ def laHexMapPlot():
 
     # TODO: refactor!
 
-    df = pd.read_csv(
-        static('data/local_authorities.csv'),
-        parse_dates=['declaration_date'],
-        dayfirst=True)
+    df = chartData.loadCSV(
+        filename='local_authorities.csv',
+        parse_dates=['declaration_date'])
 
     df['declaration_date_str'] = \
         df.declaration_date.dt.strftime('%d %b %Y')
@@ -210,10 +208,9 @@ def laHexMapPlot():
 
 def partyNetZeroPlot():
 
-    df = pd.read_csv(
-        static('data/political_parties.csv'),
-        parse_dates=['date_call_made'],
-        dayfirst=True)
+    df = chartData.loadCSV(
+        filename='political_parties.csv',
+        parse_dates=['date_call_made'])
 
     df['start_year'] = df.target_net_zero_year - 0.5
     df['end_year'] = df.target_net_zero_year + 0.5
@@ -247,10 +244,9 @@ def partyNetZeroPlot():
 
 def laNetZeroPlot():
 
-    df = pd.read_csv(
-        static('data/local_authorities.csv'),
-        parse_dates=['declaration_date'],
-        dayfirst=True)
+    df = chartData.loadCSV(
+        filename='local_authorities.csv',
+        parse_dates=['declaration_date'])
 
     df = df.loc[~pd.isnull(df.target_net_zero_year)]
     df = df.groupby(['target_net_zero_year']).size()
@@ -288,8 +284,8 @@ def laNetZeroPlot():
 
 def websitePlot():
 
-    df = pd.read_csv(
-        static('data/website.csv'),
+    df = chartData.loadCSV(
+        filename='website.csv',
         parse_dates=['date'])
 
     # TODO: refactor
@@ -319,8 +315,8 @@ def websitePlot():
 
 def socialMediaPlot(platform):
 
-    df = pd.read_csv(
-        static('data/social_media.csv'),
+    df = chartData.loadCSV(
+        filename='social_media.csv',
         parse_dates=['date'])
 
     df = df.groupby(['platform', 'date']).sum().reset_index()
@@ -403,8 +399,8 @@ def socialMediaPlot(platform):
 
 def bookSalesPlot():
 
-    df = pd.read_csv(
-        static('data/book_sales.csv'),
+    df = chartData.loadCSV(
+        filename='book_sales.csv',
         parse_dates=['date'])
 
     df['Sales'] = df.sales.cumsum()

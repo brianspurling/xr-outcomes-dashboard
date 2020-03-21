@@ -49,12 +49,12 @@ class Conf():
             'twitter': [
                 'Cumulative follows over time',
                 # 'Cumulative likes over time',
-                'Daily follows',
+                #'Daily follows',
                 'Daily likes'],
             'facebook': [
                 'Cumulative follows over time',
                 # 'Cumulative likes over time'
-                'Daily follows',
+                #'Daily follows',
                 'Daily likes'],
             'youtube': [
                 # 'Cumulative follows over time'

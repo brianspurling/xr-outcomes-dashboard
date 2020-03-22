@@ -16,7 +16,7 @@ def isDataStale(model):
     lastLoad = loadHistoryQS.values('last_load_time').first()
     if lastLoad is None:
         dataIsStale = True
-    elif lastLoad['last_load_time'] + timedelta(conf.HOURS_BETWEEN_DATA_REFRESH) < timezone.now():
+    elif lastLoad['last_load_time'] + timedelta(hours=conf.HOURS_BETWEEN_DATA_REFRESH) < timezone.now():
         dataIsStale = True
     if dataIsStale:
         print()
@@ -33,9 +33,10 @@ def refreshFromCSV(model):
         csvfile = open(static('data/' + filename + '.csv'))
         csvReader = csv.reader(csvfile)
     else:
-        print(model.__name__ + ': reading ' + filename + ' from S3 (' + conf.S3_BUCKET + ')')
-        s3 = boto3.client('s3')
-        print(filename)
+        s3 = boto3.client(
+            's3',
+            aws_access_key_id=conf.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=conf.AWS_SECRET_ACCESS_KEY)
         obj = s3.get_object(Bucket=conf.S3_BUCKET, Key=filename + '.csv')
         lines = obj['Body'].read().decode('utf-8').splitlines(True)
         csvReader = csv.reader(lines)

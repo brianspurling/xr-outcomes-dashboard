@@ -1,1 +1,1 @@
-web: gunicorn outcomes.wsgi
+web: gunicorn outcomes.outcomes.wsgi

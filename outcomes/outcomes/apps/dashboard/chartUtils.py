@@ -1,5 +1,7 @@
 from django.templatetags.static import static
 
+from django.conf import settings as conf
+
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import DatetimeTickFormatter, NumeralTickFormatter, DataRange1d, Div
 from bokeh.models.glyphs import HexTile
@@ -7,7 +9,6 @@ from bokeh.models.glyphs import HexTile
 from datetime import datetime, date, timedelta
 import random
 
-from .Conf import conf
 from . import chartFormatter
 
 
@@ -23,7 +24,7 @@ def barChart(data,
 
     p = figure(
         x_range=x_range,
-        tools=conf.tools,
+        tools=conf.TOOLS,
         tooltips=tooltips)
 
     p.xaxis.axis_label = x_label
@@ -33,10 +34,10 @@ def barChart(data,
         source=data,
         x=cats,
         top=vals,
-        width=conf.bar_width,
-        line_color=conf.bar_border_color,
-        line_width=conf.bar_border_width,
-        fill_color=conf.pink)
+        width=conf.BAR_WIDTH,
+        line_color=conf.BAR_BORDER_COLOR,
+        line_width=conf.BAR_BORDER_WIDTH,
+        fill_color=conf.PINK)
 
     chartFormatter.formatPlot(p, rotateXAxisLabels=True, isBarChart=True)
 
@@ -47,7 +48,7 @@ def stackedBar(data, x, y, ylabel, tooltips):
 
     p = figure(
         x_range=data.data[x].tolist(),
-        tools=conf.tools,
+        tools=conf.TOOLS,
         tooltips=tooltips)
 
     p.yaxis.axis_label = ylabel
@@ -57,9 +58,9 @@ def stackedBar(data, x, y, ylabel, tooltips):
         stackers=y,
         x=x,
         width=0.7,
-        line_color=conf.bar_border_color,
-        line_width=conf.bar_border_width,
-        fill_color=[conf.lemon, conf.pink])
+        line_color=conf.BAR_BORDER_COLOR,
+        line_width=conf.BAR_BORDER_WIDTH,
+        fill_color=[conf.LEMON, conf.PINK])
 
     # Bespoke formatting for this chart
 
@@ -80,9 +81,9 @@ def hexMap(data, tooltips):
         orientation='pointytop',
         size=1,
         fill_color='color',
-        line_color=conf.white)
+        line_color=conf.WHITE)
 
-    p = figure(tooltips=createTooltip(tooltips))
+    p = figure(tools=conf.TOOLS, tooltips=createTooltip(tooltips))
 
     p.match_aspect = True
 
@@ -106,7 +107,7 @@ def boxPlot(data,
     # Primary Plot Creation
     p = figure(
         y_range=y_range,
-        tools=conf.tools,
+        tools=conf.TOOLS,
         tooltips=tooltips)
 
     p.xaxis.axis_label = x_label
@@ -118,9 +119,9 @@ def boxPlot(data,
         y0=cats,
         x1=whisker_right,
         y1=cats,
-        line_color=conf.whisker_line_color,
-        line_width=conf.whisker_line_width,
-        line_cap=conf.whisker_line_cap)
+        line_color=conf.WHISKER_LINE_COLOR,
+        line_width=conf.WHISKER_LINE_WIDTH,
+        line_cap=conf.WHISKER_LINE_CAP)
 
     # Boxes
     p.hbar(
@@ -129,10 +130,10 @@ def boxPlot(data,
         height=0.7,
         left=box_left,
         right=box_right,
-        fill_color=conf.box_fill_color,
-        line_color=conf.box_line_color,
-        line_cap=conf.box_line_cap,
-        line_width=conf.box_line_width)
+        fill_color=conf.BOX_FILL_COLOR,
+        line_color=conf.BOX_LINE_COLOR,
+        line_cap=conf.BOX_LINE_CAP,
+        line_width=conf.BOX_LINE_WIDTH)
 
     chartFormatter.formatPlot(p, isHorizontal=True, isBarChart=True)
 
@@ -142,13 +143,13 @@ def boxPlot(data,
 def lineChart_figure(tooltips=None):
 
     start = datetime.strptime(
-        conf.start_date_of_time_series, '%Y-%m-%d')
+        conf.START_DATE_OF_TIME_SERIES, '%Y-%m-%d')
     end = datetime.today() - timedelta(days = 1)
 
     p = figure(
         x_axis_type='datetime',
         x_range=DataRange1d(start=start, end=end),
-        tools=conf.tools,
+        tools=conf.TOOLS,
         tooltips=tooltips)
 
     p.xaxis.formatter = \
@@ -176,9 +177,9 @@ def lineChart_line(p, data, x, y, visible=True):
         source=data,
         x=x,
         y=y,
-        line_color=conf.chart_line_colour,
-        line_width=conf.chart_line_width_thin,
-        line_cap=conf.chart_line_cap,
+        line_color=conf.CHART_LINE_COLOR,
+        line_width=conf.CHART_LINE_WIDTH_THIN,
+        line_cap=conf.CHART_LINE_CAP,
         name=y,
         visible=visible)
 
@@ -196,7 +197,7 @@ def lineChart(data, x, y, tooltips):
 def createTooltip(labelValuePairs):
 
     html = ''
-    html += '<div style="background-color: ' + conf.white + '">'
+    html += '<div style="background-color: ' + conf.WHITE + '">'
     html += '<table>'
     for labelValuePair in labelValuePairs:
 
@@ -232,7 +233,7 @@ def backgroundImage():
 
     d1 = Div(
         text='''<div class="background_image_div" style="left:-''' +
-             str(conf.dashboard_width - random.randint(0, 400)) +
+             str(conf.DASHBOARD_WIDTH - random.randint(0, 400)) +
              '''px;"><img src="''' +
              static('images/' + conf.BG_IMG_URLS[random.randint(0, len(conf.BG_IMG_URLS)-1)]) +
              '''" class="background_image"></div>''')

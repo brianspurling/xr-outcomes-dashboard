@@ -6,8 +6,8 @@ from bokeh.layouts import column
 from . import kpis
 from . import charts
 
-def dashboard(request):
 
+def dashboard(request):
     kpi_totalLAs = kpis.totalLAs()
     kpi_laDeclared = kpis.laDeclared()
     kpi_laNetZero2030 = kpis.laNetZero2030()

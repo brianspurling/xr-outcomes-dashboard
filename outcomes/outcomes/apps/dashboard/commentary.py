@@ -1,11 +1,12 @@
 from django.templatetags.static import static
-from .models import Commentary
+
+from django.conf import settings as conf
 
 from bokeh.models import Div
 
 import pandas as pd
 
-from .Conf import conf
+from .models import Commentary
 
 
 def getCommentary(chartName):
@@ -14,8 +15,8 @@ def getCommentary(chartName):
 
     commentaryDiv = Div(
         text=commentaryText,
-        width=conf.commentary_width,
-        height=conf.commentary_height,
+        width=conf.COMMENTARY_WIDTH,
+        height=conf.COMMENTARY_HEIGHT,
         css_classes=['commentary'])
 
     return commentaryDiv

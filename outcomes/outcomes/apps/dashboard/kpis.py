@@ -2,8 +2,6 @@ from django.templatetags.static import static
 
 import pandas as pd
 
-from .Conf import conf
-
 
 def totalLAs():
     df = pd.read_csv(static('data/local_authorities.csv'))

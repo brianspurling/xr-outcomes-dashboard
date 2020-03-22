@@ -1,5 +1,6 @@
 from django.templatetags.static import static
-from .models import Website, SocialMedia, PoliticalParties, LocalAuthorities, BookSales
+
+from django.conf import settings as conf
 
 from bokeh.layouts import row, column
 from bokeh.models import CustomJS, DateSlider, Select, ColumnDataSource, HoverTool, Div
@@ -10,7 +11,7 @@ import os
 from datetime import datetime, timedelta, date
 import json
 
-from .Conf import conf
+from .models import Website, SocialMedia, PoliticalParties, LocalAuthorities, BookSales
 from . import chartUtils
 from . import commentary
 
@@ -125,11 +126,11 @@ def laHexMapPlot():
         declared_date_str.append(decDateStr)
 
         if decDateStr == 'Not declared':
-            color.append(conf.white)
+            color.append(conf.WHITE)
         elif decDate >= declaredFromDate:
-            color.append(conf.lemon)
+            color.append(conf.LEMON)
         else:
-            color.append(conf.pink)
+            color.append(conf.PINK)
 
         target_net_zero_year.append(
             list(df.loc[
@@ -377,7 +378,7 @@ def socialMediaPlot(platform):
 
 
     select = Select(
-        width=conf.dropdown_list_width,
+        width=conf.DROPDOWN_LIST_WIDTH,
         options=conf.SOCIAL_MEDIA_DROPDOWN_OPTIONS[platform.lower()],
         css_classes=["dropdown_list"])
 

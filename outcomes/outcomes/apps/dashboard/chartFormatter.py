@@ -1,6 +1,6 @@
-import math
+from django.conf import settings as conf
 
-from .Conf import conf
+import math
 
 
 def formatPlot(p,
@@ -34,16 +34,16 @@ def formatPlotArea(p, isBarChart=False):
 
     # Two attributes for height depending on plot type
     try:
-        p.frame_height = conf.plot_height
+        p.frame_height = conf.PLOT_HEIGHT
     except AttributeError:
-        p.height = conf.plot_height
+        p.height = conf.PLOT_HEIGHT
 
-    p.plot_width = conf.plot_width
+    p.plot_width = conf.PLOT_WIDTH
 
     if not isBarChart:
-         p.min_border_left = conf.chart_min_border_left
-         p.min_border_right = conf.chart_min_border_right
-         p.min_border_top = conf.chart_min_border_top
+         p.min_border_left = conf.CHART_MIN_BORDER_LEFT
+         p.min_border_right = conf.CHART_MIN_BORDER_RIGHT
+         p.min_border_top = conf.CHART_MIN_BORDER_TOP
 
 
 def formatAxesHidden(p):
@@ -57,13 +57,13 @@ def formatAxesHidden(p):
 
 def formatAxes(p, isHorizontal=False, isBarChart=False):
 
-    p.axis.axis_line_width = conf.axis_line_width
-    p.axis.axis_line_cap = conf.axis_line_cap
+    p.axis.axis_line_width = conf.AXIS_LINE_WIDTH
+    p.axis.axis_line_cap = conf.AXIS_LINE_CAP
 
     if isHorizontal and isBarChart:
-        p.y_range.range_padding = conf.chart_range_padding
+        p.y_range.range_padding = conf.CHART_RANGE_PADDING
     elif isBarChart:
-        p.x_range.range_padding = conf.chart_range_padding
+        p.x_range.range_padding = conf.CHART_RANGE_PADDING
 
 
 def formatAxesTicks(p, isHorizontal=False, rotateXAxisLabels=False):
@@ -83,28 +83,28 @@ def formatAxesTicks(p, isHorizontal=False, rotateXAxisLabels=False):
     p.axis.minor_tick_line_color = None
     p.axis.major_tick_line_color = None
 
-    p.axis.major_label_standoff = conf.major_label_standoff
+    p.axis.major_label_standoff = conf.MAJOR_LABEL_STANDOFF
 
-    p.axis.major_label_text_font = conf.major_label_text_font
-    p.axis.major_label_text_font_style = conf.major_label_text_font_style
-    p.axis.major_label_text_font_size = conf.major_label_text_font_size
-    p.axis.major_label_text_color = conf.major_label_text_color
+    p.axis.major_label_text_font = conf.MAJOR_LABEL_TEXT_FONT
+    p.axis.major_label_text_font_style = conf.MAJOR_LABEL_TEXT_FONT_STYLE
+    p.axis.major_label_text_font_size = conf.MAJOR_LABEL_TEXT_SIZE
+    p.axis.major_label_text_color = conf.MAJOR_LABEL_TEXT_COLOR
 
     if rotateXAxisLabels:
         p.xaxis.major_label_orientation = math.pi/4
 
     # Specific axis
 
-    val_axis.major_tick_line_cap = conf.major_tick_line_cap
-    val_axis.major_tick_line_width = conf.major_tick_line_width
-    val_axis.major_tick_out = conf.major_tick_out
+    val_axis.major_tick_line_cap = conf.MAJOR_TICK_LINE_CAP
+    val_axis.major_tick_line_width = conf.MAJOR_TICK_LINE_WIDTH
+    val_axis.major_tick_out = conf.MAJOR_TICK_OUT
 
 
 def formatAxesLabels(p):
 
-    p.axis.axis_label_standoff = conf.axis_label_standoff
+    p.axis.axis_label_standoff = conf.AXIS_LABEL_STANDOFF
 
-    p.axis.axis_label_text_font = conf.axis_label_text_font
-    p.axis.axis_label_text_font_style = conf.axis_label_text_font_style
-    p.axis.axis_label_text_color = conf.axis_label_text_color
-    p.axis.axis_label_text_font_size = conf.axis_label_text_font_size
+    p.axis.axis_label_text_font = conf.AXIS_LABEL_TEXT_FONT
+    p.axis.axis_label_text_font_style = conf.AXIS_LABEL_TEXT_FONT_STYLE
+    p.axis.axis_label_text_color = conf.AXIS_LABEL_TEXT_COLOR
+    p.axis.axis_label_text_font_size = conf.AXIS_LABEL_TEXT_FONT_SIZE

@@ -2,11 +2,11 @@ from django.templatetags.static import static
 from django.db import models
 from django.utils import timezone
 
+from django.conf import settings as conf
+
 from datetime import datetime, timedelta
 import csv
 import boto3
-
-from .Conf import conf
 
 
 def isDataStale(model):

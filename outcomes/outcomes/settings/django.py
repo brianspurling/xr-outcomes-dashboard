@@ -16,10 +16,10 @@ env = environ.Env()
 
 TEMPLATE_DEBUG = DEBUG
 
-STATIC_URL = os.path.join(root, env.str('STATIC_URL', default='static/'))
-STATIC_ROOT = env.str('STATIC_ROOT', default='/static/')
+STATIC_ROOT = os.path.join(root, 'staticfiles')
+STATIC_URL = env.str('STATIC_URL', default='/static/')
 
-STATICFILES_DIRS = [os.path.join(root, 'static')]
+STATICFILES_DIRS = (os.path.join(root, 'static'),)
 
 ROOT_URLCONF = 'outcomes.urls'
 

@@ -35,6 +35,8 @@ class Conf():
         self.AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
         self.S3_BUCKET = os.environ["S3_BUCKET"]
 
+        self.HOURS_BETWEEN_DATA_REFRESH = float(self.HOURS_BETWEEN_DATA_REFRESH)
+
         self.WARNINGS = []
 
         self.start_date_of_time_series = '2019-01-01'

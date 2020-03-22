@@ -1,4 +1,5 @@
 from django.templatetags.static import static
+from .models import Commentary
 
 from bokeh.models import Div
 
@@ -9,10 +10,7 @@ from .Conf import conf
 
 def getCommentary(chartName):
 
-    df = pd.read_csv(static('data/commentary.csv'))
-
-    commentaryText = \
-        df.loc[df.chart_name == chartName, 'commentary_text'].values[0]
+    commentaryText = Commentary.objects.get(chart_name=chartName).commentary_text
 
     commentaryDiv = Div(
         text=commentaryText,

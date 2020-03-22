@@ -18,7 +18,7 @@ def dashboard(request):
     p_partyNetZero = charts.partyNetZeroPlot()
     p_laNetZero = charts.laNetZeroPlot()
     p_website = charts.websitePlot()
-    # p_bookSales = charts.bookSalesPlot()
+    p_bookSales = charts.bookSalesPlot()
 
     p_twitter = Panel(child=charts.socialMediaPlot('Twitter'), title='Twitter')
     p_facebook = Panel(child=charts.socialMediaPlot('Facebook'), title='Facebook')
@@ -32,7 +32,7 @@ def dashboard(request):
         'la_net_zero_plot': p_laNetZero,
         'website_plot': p_website,
         'social_media_tabs': socialMediaTabs,
-        # 'book_sales_plot': p_bookSales
+        'book_sales_plot': p_bookSales
     }
 
     script, plotDivs = components(plots)
@@ -65,6 +65,6 @@ def dashboard(request):
          'social_media_title': 'SOCIAL MEDIA',
          'social_media_tabs': plotDivs['social_media_tabs'],
 
-         # 'book_sales_title': 'SALES OF ‘THIS IS NOT A DRILL‘',
-         # 'book_sales_plot': plotDivs['book_sales_plot']
+         'book_sales_title': 'SALES OF ‘THIS IS NOT A DRILL‘',
+         'book_sales_plot': plotDivs['book_sales_plot']
          })

@@ -1,4 +1,5 @@
 from django.templatetags.static import static
+from .models import Website, SocialMedia, PoliticalParties, LocalAuthorities, BookSales
 
 from bokeh.layouts import row, column
 from bokeh.models import CustomJS, DateSlider, Select, ColumnDataSource, HoverTool, Div
@@ -10,23 +11,16 @@ from datetime import datetime, timedelta, date
 import json
 
 from .Conf import conf
-from . import chartData
 from . import chartUtils
 from . import commentary
 
 
 def laDeclarationsPlot():
 
-    df = chartData.loadCSV(
-        filename='local_authorities.csv',
-        parse_dates=['declaration_date'])
-
-    df['declaration_date_str'] = \
-        df.declaration_date.dt.strftime('%d %b %Y')
-
+    df = pd.DataFrame(LocalAuthorities.objects.getAll())
     totalLAs = df.shape[0]
     df['dec_month'] = df.declaration_date + pd.offsets.MonthBegin(-1)
-    df['dec_yes'] = np.where(df['is_declared'] == 'YES', 1, 0)
+    df['dec_yes'] = np.where(df['is_declared'], 1, 0)
     df = df.groupby(['dec_month']).agg({'dec_yes': 'sum'})
     months = pd.date_range(
         start=df.index.min(),
@@ -69,12 +63,7 @@ def laHexMapPlot():
 
     # TODO: refactor!
 
-    df = chartData.loadCSV(
-        filename='local_authorities.csv',
-        parse_dates=['declaration_date'])
-
-    df['declaration_date_str'] = \
-        df.declaration_date.dt.strftime('%d %b %Y')
+    df = pd.DataFrame(LocalAuthorities.objects.getAll())
 
     df['target_net_zero_year'] = df['target_net_zero_year'].fillna('')
 
@@ -133,12 +122,9 @@ def laHexMapPlot():
                 'declaration_date_str'])[0]
 
         declared_date.append(decDate)
-        if str(decDate) == 'NaT':
-            declared_date_str.append('Not declared')
-        else:
-            declared_date_str.append(decDateStr)
+        declared_date_str.append(decDateStr)
 
-        if str(decDate) == 'NaT':
+        if decDateStr == 'Not declared':
             color.append(conf.white)
         elif decDate >= declaredFromDate:
             color.append(conf.lemon)
@@ -208,23 +194,17 @@ def laHexMapPlot():
 
 def partyNetZeroPlot():
 
-    df = chartData.loadCSV(
-        filename='political_parties.csv',
-        parse_dates=['date_call_made'])
-
-    df['start_year'] = df.target_net_zero_year - 0.5
-    df['end_year'] = df.target_net_zero_year + 0.5
-    df['vote_pcnt'] = df.vote_pcnt.round(1).fillna('??').map(str) + '%'
+    data = PoliticalParties.objects.getAll()
 
     tooltips = chartUtils.createTooltip([
         ('Target net zero year', 'target_net_zero_year'),
-        ('Share of vote', 'vote_pcnt')])
+        ('Share of vote', 'vote_pcnt_str')])
 
-    data = ColumnDataSource(df)
+    data = ColumnDataSource(data)
 
     boxPlot = chartUtils.boxPlot(
         data=data,
-        y_range=df['org_name'],
+        y_range=data.data['org_name'],
         cats='org_name',
         whisker_right='latest_year',
         whisker_left='earliest_year',
@@ -244,9 +224,7 @@ def partyNetZeroPlot():
 
 def laNetZeroPlot():
 
-    df = chartData.loadCSV(
-        filename='local_authorities.csv',
-        parse_dates=['declaration_date'])
+    df = pd.DataFrame(LocalAuthorities.objects.getAll())
 
     df = df.loc[~pd.isnull(df.target_net_zero_year)]
     df = df.groupby(['target_net_zero_year']).size()
@@ -284,19 +262,11 @@ def laNetZeroPlot():
 
 def websitePlot():
 
-    df = chartData.loadCSV(
-        filename='website.csv',
-        parse_dates=['date'])
-
-    # TODO: refactor
-    df['date_string'] = df.date.dt.strftime('%d %b %Y')
-    df['metric_number'] = df.sessions.map('{:,.0f}'.format)
-
     tooltips = chartUtils.createTooltip([
-        ('Date', 'date_string'),
-        ('sessions', 'metric_number')])
+        ('Date', 'date_str'),
+        ('sessions', 'sessions_str')])
 
-    data = ColumnDataSource(df)
+    data = ColumnDataSource(Website.objects.getAll())
 
     lineChart = chartUtils.lineChart(
         data=data,
@@ -315,22 +285,64 @@ def websitePlot():
 
 def socialMediaPlot(platform):
 
-    df = chartData.loadCSV(
-        filename='social_media.csv',
-        parse_dates=['date'])
+    df = pd.DataFrame(SocialMedia.objects.getAll())
 
     df = df.groupby(['platform', 'date']).sum().reset_index()
-    df = df.sort_values(['platform', 'date'])
 
-    df = chartData.processSocialMediaData(df, platform)
+    m = (df.platform == platform)
 
-    df = df.loc[df.platform == platform]
+    # We've not doing the calcs below at the moment, because the daily data is
+    # too flakey to reverse calculate into cumulative data
 
-    # TODO: refactor
-    df['date_string'] = df.date.dt.strftime('%d %b %Y')
+    # We either get daily figures or cumulative figures from source, so
+    # we calculate what we don't have
+    # if df.loc[m].follows_cum.sum() == 0:
+    #     df.loc[m, 'follows_cum'] = df.loc[m].follows.cumsum()
+    # if df.loc[m].likes_cum.sum() == 0:
+    #     df.loc[m, 'likes_cum'] = df.loc[m].likes.cumsum()
+    # if df.loc[m].views_cum.sum() == 0:
+    #     df.loc[m, 'views_cum'] = df.loc[m].views.cumsum()
+
+    # For the reverse of cumsum() we need to do a diff, then
+    # set first value to 0
+    # This is only valid if you have daily stats from _the beginning
+    # of time_ in the source data, otherwise the cumulation doesn't
+    # start from the right value and is incorrect. Hiding this data
+    # is controlled by the dashboard configuration
+    # if df.loc[m, 'follows'].sum() == 0 and df.loc[m, 'follows_cum'].sum() != 0:
+    #     df.loc[m, 'follows'] = df.loc[m].follows_cum.diff().fillna(0)
+    #     firstValIndex = list(df.index[m & (df.follows != 0) & ~pd.isnull(df.follows)])[0]
+    #     lastValIndex = list(df.index[m & (df.follows != 0) & ~pd.isnull(df.follows)])[-1]
+    #     df.loc[firstValIndex, 'follows'] = 0
+    #     df.loc[lastValIndex, 'follows'] = 0
+    # if df.loc[m, 'likes'].sum() == 0 and df.loc[m, 'likes_cum'].sum() != 0:
+    #     df.loc[m, 'likes'] = df.loc[m].likes_cum.diff().fillna(0)
+    #     firstValIndex = list(df.index[m & (df.likes != 0) & ~pd.isnull(df.likes)])[0]
+    #     lastValIndex = list(df.index[m & (df.likes != 0) & ~pd.isnull(df.likes)])[-1]
+    #     df.loc[firstValIndex, 'likes'] = 0
+    #     df.loc[lastValIndex, 'likes'] = 0
+    # if df.loc[m, 'views'].sum() == 0 and df.loc[m, 'views_cum'].sum() != 0:
+    #     df.loc[m, 'views'] = df.loc[m].views_cum.diff().fillna(0)
+    #     firstValIndex = list(df.index[m & (df.views != 0) & ~pd.isnull(df.views)])[0]
+    #     lastValIndex = list(df.index[m & (df.views != 0) & ~pd.isnull(df.views)])[-1]
+    #     df.loc[firstValIndex, 'views'] = 0
+    #     df.loc[lastValIndex, 'views'] = 0
+
+    # Bokeh doesn't seem to like taking value/label tuples
+    # in a linked dropdown/plot, so we will set our col
+    # headings to user-friendly terms  now
+    df.rename(columns={'follows': 'Daily follows',
+                       'likes': 'Daily likes',
+                       'views': 'Daily views',
+                       'follows_cum': 'Cumulative follows over time',
+                       'likes_cum': 'Cumulative likes over time',
+                       'views_cum': 'Cumulative views over time'},
+              inplace=True)
+
+    df = df.loc[m]
 
     for metric in conf.SOCIAL_MEDIA_DROPDOWN_OPTIONS[platform.lower()]:
-        df[metric.replace(' ', '') + '_number'] = df[metric].map('{:,.0f}'.format)
+        df[metric.replace(' ', '') + '_str'] = df[metric].map('{:,.0f}'.format)
 
     data = ColumnDataSource(df)
 
@@ -358,8 +370,8 @@ def socialMediaPlot(platform):
                 visible=(i==0)))
 
         tooltips = chartUtils.createTooltip([
-            ('Date', 'date_string'),
-            (metric, metric.replace(' ', '') + '_number')])
+            ('Date', 'date_str'),
+            (metric, metric.replace(' ', '') + '_str')])
 
         p.add_tools(HoverTool(renderers=[lines[i]], tooltips=tooltips))
 
@@ -399,26 +411,16 @@ def socialMediaPlot(platform):
 
 def bookSalesPlot():
 
-    df = chartData.loadCSV(
-        filename='book_sales.csv',
-        parse_dates=['date'])
-
-    df['Sales'] = df.sales.cumsum()
-
-    # TODO: refactor
-    df['date_string'] = df.date.dt.strftime('%d %b %Y')
-    df['metric_number'] = df.Sales.map('{:,.0f}'.format)
-
     tooltips = chartUtils.createTooltip([
-        ('Date', 'date_string'),
-        ('Sales', 'metric_number')])
+        ('Date', 'date_str'),
+        ('Sales', 'sales_str')])
 
-    data = ColumnDataSource(df)
+    data = ColumnDataSource(BookSales.objects.getAll())
 
     lineChart = chartUtils.lineChart(
         data=data,
         x='date',
-        y='Sales',
+        y='sales_cum',
         tooltips=tooltips)
 
     commentaryDiv = commentary.getCommentary('book_sales')

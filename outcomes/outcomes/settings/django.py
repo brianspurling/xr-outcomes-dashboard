@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'outcomes.apps.dashboard',
+    'outcomes.outcomes.apps.dashboard',
 ]
 
 TEMPLATES = [

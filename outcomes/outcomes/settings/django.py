@@ -20,7 +20,7 @@ STATIC_ROOT = os.path.join(root, 'staticfiles')
 STATIC_URL = env.str('STATIC_URL', default='/outcomes/static/')
 STATICFILES_DIRS = (os.path.join(root, 'static'),)
 
-ROOT_URLCONF = 'outcomes.urls'
+ROOT_URLCONF = 'outcomes.outcomes.urls'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'outcomes.apps.dashboard',
+    'outcomes.outcomes.apps.dashboard',
 ]
 
 TEMPLATES = [

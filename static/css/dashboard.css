@@ -65,6 +65,7 @@ span.kpi-title {
   font-size: 22pt;
   vertical-align: top;
   min-width: 500px;
+  margin-top: 8.5px;
 }
 
 span.kpi {

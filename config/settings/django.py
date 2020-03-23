@@ -60,3 +60,5 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+DJANGO_ALLOWED_HOSTS=['.herokuapp.com']

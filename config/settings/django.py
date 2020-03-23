@@ -1,14 +1,15 @@
 import os
 import environ
+import dj_database_url
+
 env = environ.Env()
 environ.Env.read_env()  # reads the .env file
 
 DEBUG = env('DEBUG', default=False)
 SECRET_KEY = env('SECRET_KEY')
 
-DATABASES = {
-    'default': env.db(),
-}
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 root = environ.Path(__file__) - 3
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -61,4 +62,4 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['.herokuapp.com', 'localhost']

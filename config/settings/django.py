@@ -61,4 +61,4 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-DJANGO_ALLOWED_HOSTS=['.herokuapp.com']
+DJANGO_ALLOWED_HOSTS = ['*.herokuapp.com']

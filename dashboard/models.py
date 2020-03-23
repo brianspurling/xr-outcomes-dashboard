@@ -305,6 +305,14 @@ class CommentaryManager(models.Manager):
 
         return data
 
+    def getOne(self, chartName):
+
+        if isDataStale(self.model):
+            refreshFromCSV(self.model)
+
+        return self.model.objects.get(chart_name=chartName)
+
+
 class Commentary(models.Model):
     csv_filename = 'commentary'
     chart_name = models.TextField(primary_key=True)

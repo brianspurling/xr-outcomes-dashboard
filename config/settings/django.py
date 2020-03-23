@@ -8,9 +8,6 @@ environ.Env.read_env()  # reads the .env file
 DEBUG = env('DEBUG', default=False)
 SECRET_KEY = env('SECRET_KEY')
 
-DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
-
 root = environ.Path(__file__) - 3
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -25,6 +22,9 @@ STATICFILES_FINDERS = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 INSTALLED_APPS = [
     'django.contrib.admin',

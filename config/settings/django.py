@@ -13,7 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 TEMPLATE_DEBUG = DEBUG
 
-STATIC_ROOT = os.path.join(root, 'staticfiles')  # for deployment
+STATIC_ROOT = os.path.join(root, 'staticfiles/')  # for deployment
 STATICFILES_DIRS = (os.path.join(root, 'static/'), )  # for local
 STATIC_URL = '/static/'  # the URL that serves static files
 STATICFILES_FINDERS = [

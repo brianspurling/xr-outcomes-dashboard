@@ -4,7 +4,6 @@ env = environ.Env()
 environ.Env.read_env()  # reads the .env file
 
 DEBUG = env('DEBUG', default=False)
-
 SECRET_KEY = env('SECRET_KEY')
 
 DATABASES = {
@@ -12,15 +11,19 @@ DATABASES = {
 }
 
 root = environ.Path(__file__) - 3
-env = environ.Env()
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 TEMPLATE_DEBUG = DEBUG
 
-STATIC_ROOT = os.path.join(root, 'staticfiles')
-STATIC_URL = env.str('STATIC_URL', default='/outcomes/static/')
-STATICFILES_DIRS = (os.path.join(root, 'static'),)
+STATIC_ROOT = os.path.join(root, 'staticfiles')  # for deployment
+STATICFILES_DIRS = (os.path.join(root, 'static/'), )  # for local
+STATIC_URL = '/static/'  # the URL that serves static files
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
-ROOT_URLCONF = 'outcomes.urls'
+ROOT_URLCONF = 'config.urls'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,13 +32,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'outcomes.outcomes.apps.dashboard',
+    'dashboard',
 ]
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': (root.path('outcomes/templates'),),
+        'DIRS': (os.path.join(root, 'templates/'),),
         'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [

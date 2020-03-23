@@ -1,1 +1,1 @@
-web: gunicorn --log-file=- outcomes.outcomes.wsgi:application
+web: gunicorn --log-file=- config.wsgi

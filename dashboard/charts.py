@@ -72,7 +72,8 @@ def laHexMapPlot():
     end = datetime.now()
 
     declaredFromDate = datetime.now()
-    with open(static('ref/hexmap.geojson'), 'r') as f:
+
+    with open(os.path.join(conf.BASE_DIR, 'static/ref/hexmap.geojson'), 'r') as f:
         data = json.load(f)
 
     # For reasons that aren't clear to me, Bokeh plots

@@ -11,7 +11,7 @@ from .models import Commentary
 
 def getCommentary(chartName):
 
-    commentaryText = Commentary.objects.get(chart_name=chartName).commentary_text
+    commentaryText = Commentary.objects.getOne(chartName=chartName).commentary_text
 
     commentaryDiv = Div(
         text=commentaryText,

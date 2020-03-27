@@ -186,6 +186,7 @@ span.kpi {
 .bk-root .bk-slider-value {
     font-family: Crimson Text;
     font-size: 15pt;
+    color: black;
 }
 
 .bk .commentary {
@@ -197,6 +198,7 @@ span.kpi {
   background-color: white;
   font-family: Crimson Text;
   font-size: 12pt;
+  color: black;
   padding: 25px;
   border-radius: 25px;
   overflow: hidden;

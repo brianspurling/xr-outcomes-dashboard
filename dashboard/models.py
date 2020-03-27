@@ -297,9 +297,6 @@ class CommentaryManager(models.Manager):
 
     def getAll(self):
 
-        if isDataStale(self.model):
-            refreshFromCSV(self.model)
-
         dataQS = self.model.objects.values()
         data = convertQuerySetToDict(dataQS)
 
@@ -307,14 +304,14 @@ class CommentaryManager(models.Manager):
 
     def getOne(self, chartName):
 
-        if isDataStale(self.model):
-            refreshFromCSV(self.model)
-
         return self.model.objects.get(chart_name=chartName)
 
 
 class Commentary(models.Model):
     csv_filename = 'commentary'
     chart_name = models.TextField(primary_key=True)
-    commentary_text = models.TextField()
+    commentary_text = models.TextField(blank=False)
     objects = CommentaryManager()
+
+    def __str__(self):
+        return self.chart_name

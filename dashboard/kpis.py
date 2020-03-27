@@ -13,7 +13,7 @@ def totalLAs():
 
 def laDeclared():
     df = pd.DataFrame(LocalAuthorities.objects.getAll())
-    declared = df.loc[~pd.isnull(df.declaration_date)].shape[0]
+    declared = df.loc[df['is_declared'] == True].shape[0]
     return declared
 
 

@@ -356,7 +356,7 @@ def socialMediaPlot(platform):
     for metric in conf.SOCIAL_MEDIA_DROPDOWN_OPTIONS[platform.lower()]:
         i += 1
 
-        maxValue = max(df[metric])
+        maxValue = max(df[metric]) * 1.05  # Create a little breathing room
         if i==0:
             # Keep the y axis raised above the x axis, otherwise
             # Bokeh will default it back to crossing at 0

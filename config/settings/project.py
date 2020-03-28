@@ -8,6 +8,8 @@ START_DATE_OF_TIME_SERIES = '2019-01-01'
 
 LOGO_FILENAME = 'xr_logo.png'
 
+LOCAL_DATA_DIR = '../data/'
+
 ################
 # Chart Config #
 ################

@@ -7,6 +7,8 @@ from django.conf import settings as conf
 from datetime import datetime, timedelta
 import csv
 import boto3
+import pandas as pd
+import numpy as np
 
 
 def isDataStale(model):
@@ -30,7 +32,7 @@ def refreshFromCSV(model):
 
     if conf.AWS_ACCESS_KEY_ID == '':
         print(model.__name__ + ': no S3 creds found; reading ' + filename + ' from CSV')
-        csvfile = open(static('data/' + filename + '.csv'))
+        csvfile = open(conf.LOCAL_DATA_DIR + filename + '.csv')
         csvReader = csv.reader(csvfile)
     else:
         s3 = boto3.client(
@@ -106,10 +108,65 @@ class LoadHistory(models.Model):
 
 class LocalAuthoritiesManager(models.Manager):
 
+    def refreshFromCSV(self):
+
+        # File can come from S3 or local
+
+        if conf.AWS_ACCESS_KEY_ID == '':
+            print(self.model.__name__ +
+                  ': no S3 creds found; reading ' +
+                  self.model.csv_filename + ' from CSV')
+            filePath = conf.LOCAL_DATA_DIR + self.model.csv_filename + '.csv'
+        else:
+            print(self.model.__name__ + ': reading ' + self.model.csv_filename +
+                  ' from S3 (' + conf.S3_BUCKET + ')')
+            filePath = \
+                's3://' + conf.S3_BUCKET + '/' + \
+                self.model.csv_filename + '.csv'
+
+        # Read in pandas to provide robust date parsing, and
+        # efficient conversion to Django model-friendly list of dicts
+
+        df = pd.read_csv(
+            filePath,
+            parse_dates=self.model.parse_dates,
+            dayfirst=True)
+
+        # Some data is stored in GSheets-friendly format, and thus needs
+        # converting to DB-friendly
+
+        df.is_declared = np.where(df.is_declared == 'YES', True, False)
+
+        # Django's bulk create works efficiently with a list of dicts, but
+        # unfortunately is can't cope with NaN and NaT values, so we manually
+        # replace with None
+
+        data = df.to_dict('records')
+        for rec in data:
+            for key in rec:
+                if pd.isnull(rec[key]):
+                    rec[key] = None
+        batch = [LocalAuthorities(**row) for row in data]
+
+        # Immediately before creating the new records, delete the old ones
+        self.model.objects.all().delete()
+        self.model.objects.bulk_create(batch)
+
+        # Update the load history so we avoid loading again until next refresh
+
+        (lh, created) = LoadHistory.objects.get_or_create(
+            table_name=self.model.__name__,
+            defaults={'last_load_time': timezone.now()})
+        lh.last_load_time = timezone.now()
+        lh.save()
+
+        print(self.model.__name__ + ': done')
+
+
     def getAll(self):
 
         if isDataStale(self.model):
-            refreshFromCSV(self.model)
+            self.refreshFromCSV()
 
         dataQS = self.model.objects.values()
         data = convertQuerySetToDict(dataQS)
@@ -130,6 +187,7 @@ class LocalAuthoritiesManager(models.Manager):
 class LocalAuthorities(models.Model):
 
     csv_filename = 'local_authorities'
+    parse_dates = ['declaration_date']
 
     code = models.TextField()
     ons_la_name = models.TextField()
@@ -139,6 +197,13 @@ class LocalAuthorities(models.Model):
     target_net_zero_year = models.IntegerField(blank=True, null=True)
 
     objects = LocalAuthoritiesManager()
+
+    def __repr__(self):
+        r = ''
+        for fieldName in self._meta.fields:
+            fieldName = str(fieldName).split('.')[2]
+            r += str(fieldName) + ': ' + str(getattr(self, fieldName)) + '\n'
+        return r
 
 
 class PoliticalPartiesManager(models.Manager):

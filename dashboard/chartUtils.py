@@ -3,8 +3,9 @@ from django.templatetags.static import static
 from django.conf import settings as conf
 
 from bokeh.plotting import figure, output_file, show
-from bokeh.models import DatetimeTickFormatter, NumeralTickFormatter, DataRange1d, Div
+from bokeh.models import DatetimeTickFormatter, NumeralTickFormatter, DataRange1d, Div, CustomJS, TapTool
 from bokeh.models.glyphs import HexTile
+from bokeh.layouts import row
 
 from datetime import datetime, date, timedelta
 import random
@@ -83,7 +84,33 @@ def hexMap(data, tooltips):
         fill_color='color',
         line_color=conf.WHITE)
 
-    p = figure(tools=conf.TOOLS, tooltips=createTooltip(tooltips))
+    p = figure(tools=conf.TOOLS) #, tooltips=createTooltip(tooltips))
+
+    div = Div(
+        text = '''
+            <div id="tooltip" style="position: absolute; display: none">
+            </div>''',
+        name = 'tooltip')
+
+    p.select(TapTool).callback = \
+        CustomJS(
+            args = {'tp': createTooltip(tooltips), 'plot': p},
+            code = '''
+                if (cb_data.source.selected.indices.length > 0){
+                    var selected_index = cb_data.source.selected.indices[0];
+                    var tooltip = document.getElementById("tooltip");
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = Number(cb_data.geometries.sx) - Number(800) + 'px';
+                    tooltip.style.top = Number(cb_data.geometries.sy) - Number(20) + 'px';
+
+                    tp = tp.replace('@la_name', cb_data.source.data.la_name[selected_index]);
+                    tp = tp.replace('@declared_date_str', cb_data.source.data.declared_date_str[selected_index]);
+                    tp = tp.replace('@target_net_zero_year', cb_data.source.data.target_net_zero_year[selected_index]);
+
+                    tooltip.innerHTML = tp;
+                }
+                ''')
+    data.selected.js_on_change('indices', CustomJS(code = 'if (cb_obj.indices.length == 0) document.getElementById("tooltip").style.display = \"none\"'))
 
     p.match_aspect = True
 
@@ -91,7 +118,9 @@ def hexMap(data, tooltips):
 
     chartFormatter.formatPlot(p, hideAxes=True) #, setPlotSize=False)
 
-    return p
+    layout = row(p, div)
+
+    return layout
 
 
 def boxPlot(data,

@@ -61,7 +61,7 @@ PINK = '#ED9BC4'
 GREEN = '#14AA37'
 LEMON = '#F7EE6A'
 
-TOOLS = ''  # Or a list of tool names
+TOOLS = 'tap'  # Or a list of tool names
 
 DASHBOARD_WIDTH = 1000
 

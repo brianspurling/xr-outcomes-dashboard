@@ -199,7 +199,7 @@ class PoliticalParties(models.Model):
     target_net_zero_year = models.IntegerField()
     earliest_year = models.IntegerField()
     latest_year = models.IntegerField()
-    vote_pcnt = models.DecimalField(decimal_places=2, max_digits=5)
+    vote_pcnt = models.FloatField()
 
     objects = PoliticalPartiesManager()
 

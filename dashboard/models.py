@@ -97,6 +97,14 @@ def convertQuerySetToDict(querySet):
     return d
 
 
+def genericRepr(model):
+    r = ''
+    for fieldName in model._meta.fields:
+        fieldName = str(fieldName).split('.')[2]
+        r += str(fieldName) + ': ' + str(getattr(model, fieldName)) + '\n'
+    return r
+
+
 class LoadHistory(models.Model):
     table_name = models.TextField(primary_key=True)
     last_load_time = models.DateTimeField()
@@ -148,11 +156,7 @@ class LocalAuthorities(models.Model):
     objects = LocalAuthoritiesManager()
 
     def __repr__(self):
-        r = ''
-        for fieldName in self._meta.fields:
-            fieldName = str(fieldName).split('.')[2]
-            r += str(fieldName) + ': ' + str(getattr(self, fieldName)) + '\n'
-        return r
+        return genericRepr(self)
 
 
 class PoliticalPartiesManager(models.Manager):
@@ -167,7 +171,6 @@ class PoliticalPartiesManager(models.Manager):
 
         if isDataStale(self.model):
             self.refreshFromCSV()
-
 
         dataQS = self.model.objects.order_by('-target_net_zero_year').values()
         data = convertQuerySetToDict(dataQS)
@@ -202,6 +205,9 @@ class PoliticalParties(models.Model):
     vote_pcnt = models.FloatField()
 
     objects = PoliticalPartiesManager()
+
+    def __repr__(self):
+        return genericRepr(self)
 
 
 class SocialMediaManager(models.Manager):
@@ -246,6 +252,9 @@ class SocialMedia(models.Model):
 
     objects = SocialMediaManager()
 
+    def __repr__(self):
+        return genericRepr(self)
+
 
 class WebsiteManager(models.Manager):
 
@@ -286,6 +295,9 @@ class Website(models.Model):
     sessions = models.IntegerField()
 
     objects = WebsiteManager()
+
+    def __repr__(self):
+        return genericRepr(self)
 
 
 class BookSalesManager(models.Manager):
@@ -332,6 +344,9 @@ class BookSales(models.Model):
 
     objects = BookSalesManager()
 
+    def __repr__(self):
+        return genericRepr(self)
+
 
 class CommentaryManager(models.Manager):
 
@@ -355,3 +370,6 @@ class Commentary(models.Model):
 
     def __str__(self):
         return self.chart_name
+
+    def __repr__(self):
+        return genericRepr(self)

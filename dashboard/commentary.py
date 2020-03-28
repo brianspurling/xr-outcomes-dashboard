@@ -16,7 +16,7 @@ def getCommentary(chartName):
     commentaryDiv = Div(
         text=commentaryText,
         width=conf.COMMENTARY_WIDTH,
-        height=conf.COMMENTARY_HEIGHT,
+        height_policy='min',
         css_classes=['commentary'])
 
     return commentaryDiv

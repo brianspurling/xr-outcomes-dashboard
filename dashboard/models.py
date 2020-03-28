@@ -386,7 +386,7 @@ class CommentaryManager(models.Manager):
 class Commentary(models.Model):
     csv_filename = 'commentary'
     chart_name = models.TextField(primary_key=True)
-    commentary_text = models.TextField(blank=False)
+    commentary_text = models.TextField(blank=False, max_length=550)
     objects = CommentaryManager()
 
     def __str__(self):

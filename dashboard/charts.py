@@ -104,6 +104,7 @@ def laHexMapPlot():
     declared_date = []
     declared_date_str = []
     target_net_zero_year = []
+    source = []
     color = []
     for i in range(len(data['features'])):
         q.append(data['features'][i]['properties']['q'])
@@ -138,6 +139,11 @@ def laHexMapPlot():
                 (df.code == data['features'][i]['properties']['c']),
                 'target_net_zero_year'])[0])
 
+        source.append(
+            list(df.loc[
+                (df.code == data['features'][i]['properties']['c']),
+                'source'])[0])
+
     q = np.asarray(q)
     r = np.asarray(r)
 
@@ -148,12 +154,14 @@ def laHexMapPlot():
         'declared_date': declared_date,
         'declared_date_str': declared_date_str,
         'target_net_zero_year': target_net_zero_year,
+        'source': source,
         'color': color})
 
     tooltips = [
         ('la_name'),
         ('Declared Date', 'declared_date_str'),
-        ('Net Zero Year', 'target_net_zero_year')]
+        ('Net Zero Year', 'target_net_zero_year'),
+        ('Source', 'source')]
 
     data = ColumnDataSource(df_LAs)
 

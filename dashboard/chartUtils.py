@@ -84,7 +84,7 @@ def hexMap(data, tooltips):
         fill_color='color',
         line_color=conf.WHITE)
 
-    p = figure(tools=conf.TOOLS) #, tooltips=createTooltip(tooltips))
+    p = figure(tools='tap') #, tooltips=createTooltip(tooltips))
 
     div = Div(
         text = '''
@@ -106,6 +106,8 @@ def hexMap(data, tooltips):
                     tp = tp.replace('@la_name', cb_data.source.data.la_name[selected_index]);
                     tp = tp.replace('@declared_date_str', cb_data.source.data.declared_date_str[selected_index]);
                     tp = tp.replace('@target_net_zero_year', cb_data.source.data.target_net_zero_year[selected_index]);
+                    tp = tp.replace('@target_net_zero_year', cb_data.source.data.target_net_zero_year[selected_index]);
+                    tp = tp.replace('@source', '<a href="'+cb_data.source.data.source[selected_index]+'" target="_blank">link</a>');
 
                     tooltip.innerHTML = tp;
                 }

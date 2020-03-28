@@ -61,7 +61,7 @@ PINK = '#ED9BC4'
 GREEN = '#14AA37'
 LEMON = '#F7EE6A'
 
-TOOLS = 'tap'  # Or a list of tool names
+TOOLS = ''  # Default no Bokeh tools on the charts
 
 DASHBOARD_WIDTH = 1000
 

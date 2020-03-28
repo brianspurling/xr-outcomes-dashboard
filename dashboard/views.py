@@ -10,6 +10,9 @@ from . import charts
 
 
 def dashboard(request):
+
+    conf.DATA_REFRESH_WARNING = False  # always reset to false at each refresh
+
     kpi_totalLAs = kpis.totalLAs()
     kpi_laDeclared = kpis.laDeclared()
     kpi_laNetZero2030 = kpis.laNetZero2030()
@@ -44,7 +47,7 @@ def dashboard(request):
         'dashboard.html',
         {'script': script,
 
-         'data_refresh_warning': str(conf.DATA_REFRESH_WARNING),
+         'data_refresh_warning': conf.DATA_REFRESH_WARNING,
 
          'kpi_total_las': kpi_totalLAs,
          'kpi_las_declared': kpi_laDeclared,

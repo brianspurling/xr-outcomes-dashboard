@@ -50,7 +50,7 @@ def readCSV(model):
             filePath,
             parse_dates=model.parse_dates,
             dayfirst=True)
-    except FileNotFoundError as e:
+    except (FileNotFoundError, PermissionError) as e:
         print(model.__name__ + ': ERROR opening file. Refreshed aborted')
         conf.DATA_REFRESH_WARNING = True
         df = None
@@ -232,8 +232,9 @@ class SocialMediaManager(models.Manager):
 
     def refreshFromCSV(self):
         df = readCSV(self.model)
-        batch = [SocialMedia(**row) for row in df_to_dict(df)]
-        updateDatabase(self.model, batch)
+        if df is not None:
+            batch = [SocialMedia(**row) for row in df_to_dict(df)]
+            updateDatabase(self.model, batch)
 
     def getAll(self):
 
@@ -278,8 +279,9 @@ class WebsiteManager(models.Manager):
 
     def refreshFromCSV(self):
         df = readCSV(self.model)
-        batch = [Website(**row) for row in df_to_dict(df)]
-        updateDatabase(self.model, batch)
+        if df is not None:
+            batch = [Website(**row) for row in df_to_dict(df)]
+            updateDatabase(self.model, batch)
 
     def getAll(self):
 
@@ -322,8 +324,9 @@ class BookSalesManager(models.Manager):
 
     def refreshFromCSV(self):
         df = readCSV(self.model)
-        batch = [BookSales(**row) for row in df_to_dict(df)]
-        updateDatabase(self.model, batch)
+        if df is not None:
+            batch = [BookSales(**row) for row in df_to_dict(df)]
+            updateDatabase(self.model, batch)
 
     def getAll(self):
 

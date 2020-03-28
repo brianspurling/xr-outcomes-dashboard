@@ -10,6 +10,9 @@ LOGO_FILENAME = 'xr_logo.png'
 
 LOCAL_DATA_DIR = '../data/'
 
+# This is updated to True by Models and used in UI to display warning to user
+DATA_REFRESH_WARNING = False
+
 ################
 # Chart Config #
 ################

@@ -108,6 +108,12 @@ span.kpi {
     height: 280pt;
 }
 
+/* data_refresh_warning */
+
+.data_refresh_warning {
+    font-family: Crimson Text;
+}
+
 /* Sometimes we put a sub-set of the inside tabs, and we use bokeh tabs
    for this, so we need to override bokeh's sytling */
 

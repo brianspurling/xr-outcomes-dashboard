@@ -1,6 +1,7 @@
 from django.templatetags.static import static
 from django.db import models
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 from django.conf import settings as conf
 
@@ -69,21 +70,31 @@ def df_to_dict(df):
 
 def updateDatabase(model, batch):
 
-    # Immediately before creating the new records, delete the old ones
+    try:
+        for o in batch:
+            # full_clean calls clean_fields(), clean(), validate_unique()
+            o.full_clean()
+    except ValidationError as e:
+        print(model.__name__ + ': ERROR in data. Refreshed aborted: ' +
+              str(e.message_dict))
+        conf.DATA_REFRESH_WARNING = True
+    else:
 
-    model.objects.all().delete()
+        # Immediately before creating the new records, delete the old ones
 
-    model.objects.bulk_create(batch)
+        model.objects.all().delete()
 
-    # Update the load history so we avoid loading again until next refresh
+        model.objects.bulk_create(batch)
 
-    (lh, created) = LoadHistory.objects.get_or_create(
-        table_name=model.__name__,
-        defaults={'last_load_time': timezone.now()})
-    lh.last_load_time = timezone.now()
-    lh.save()
+        # Update the load history so we avoid loading again until next refresh
 
-    print(model.__name__ + ': done')
+        (lh, created) = LoadHistory.objects.get_or_create(
+            table_name=model.__name__,
+            defaults={'last_load_time': timezone.now()})
+        lh.last_load_time = timezone.now()
+        lh.save()
+
+        print(model.__name__ + ': done')
 
 
 def convertQuerySetToDict(querySet):

@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.conf import settings as conf
+
 from bokeh.embed import components
 from bokeh.models.widgets import Panel, Tabs
 from bokeh.layouts import column
@@ -41,6 +43,8 @@ def dashboard(request):
         request,
         'dashboard.html',
         {'script': script,
+
+         'data_refresh_warning': str(conf.DATA_REFRESH_WARNING),
 
          'kpi_total_las': kpi_totalLAs,
          'kpi_las_declared': kpi_laDeclared,

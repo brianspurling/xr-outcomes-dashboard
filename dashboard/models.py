@@ -35,7 +35,7 @@ def readCSV(model):
               model.csv_filename + ' from CSV')
         filePath = conf.LOCAL_DATA_DIR + model.csv_filename + '.csv'
     else:
-        print(model.__name__ + ': reading ' + self.model.csv_filename +
+        print(model.__name__ + ': reading ' + model.csv_filename +
               ' from S3 (' + conf.S3_BUCKET + ')')
         filePath = \
             's3://' + conf.S3_BUCKET + '/' + \

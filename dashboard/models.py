@@ -6,7 +6,6 @@ from django.conf import settings as conf
 
 from datetime import datetime, timedelta
 import csv
-import boto3
 import pandas as pd
 import numpy as np
 

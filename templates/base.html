@@ -42,7 +42,7 @@
 
 <div class="content">
 
-  <ul class="nav nav-pills" style="overflow: hidden;">
+  <ul class="nav nav-pills" style="overflow: hidden;" id="mainTabs">
     <li class="active"><a href="#summary_tab" data-toggle="tab">Summary</a></li>
     <li><a href="#truth_tab" data-toggle="tab">Tell the Truth</a></li>
     <li><a href="#act_tab" data-toggle="tab">Act Now</a></li>
@@ -97,6 +97,29 @@
     <script src="https://cdn.pydata.org/bokeh/release/bokeh-2.0.0.min.js"></script>
     <script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-2.0.0.min.js"></script>
   {% endblock %}
+  <script>
+    $(document).ready(() => {
+      let url = location.href.replace(/\/$/, "");
+
+      if (location.hash) {
+        const hash = url.split("#");
+        $('#mainTabs a[href="#'+hash[1]+'"]').tab("show");
+        url = location.href.replace(/\/#/, "#");
+        history.replaceState(null, null, url);
+        setTimeout(() => {
+          $(window).scrollTop(0);
+        }, 400);
+      }
+
+      $('a[data-toggle="tab"]').on("click", function() {
+        let newUrl;
+        const hash = $(this).attr("href");
+        newUrl = url.split("#")[0] + hash;
+        newUrl += "/";
+        history.replaceState(null, null, newUrl);
+      });
+    });
+  </script>
 {% endblock %}
 
 </body>

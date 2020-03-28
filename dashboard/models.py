@@ -45,10 +45,15 @@ def readCSV(model):
     # Read in pandas to provide robust date parsing, and
     # efficient conversion to Django model-friendly list of dicts
 
-    df = pd.read_csv(
-        filePath,
-        parse_dates=model.parse_dates,
-        dayfirst=True)
+    try:
+        df = pd.read_csv(
+            filePath,
+            parse_dates=model.parse_dates,
+            dayfirst=True)
+    except FileNotFoundError as e:
+        print(model.__name__ + ': ERROR opening file. Refreshed aborted')
+        conf.DATA_REFRESH_WARNING = True
+        df = None
 
     return df
 
@@ -126,9 +131,10 @@ class LocalAuthoritiesManager(models.Manager):
 
     def refreshFromCSV(self):
         df = readCSV(self.model)
-        df.is_declared = np.where(df.is_declared == 'YES', True, False)
-        batch = [LocalAuthorities(**row) for row in df_to_dict(df)]
-        updateDatabase(self.model, batch)
+        if df is not None:
+            df.is_declared = np.where(df.is_declared == 'YES', True, False)
+            batch = [LocalAuthorities(**row) for row in df_to_dict(df)]
+            updateDatabase(self.model, batch)
 
 
     def getAll(self):
@@ -174,9 +180,10 @@ class PoliticalPartiesManager(models.Manager):
 
     def refreshFromCSV(self):
         df = readCSV(self.model)
-        df.is_political_org = np.where(df.is_political_org == 'YES', True, False)
-        batch = [PoliticalParties(**row) for row in df_to_dict(df)]
-        updateDatabase(self.model, batch)
+        if df is not None:
+            df.is_political_org = np.where(df.is_political_org == 'YES', True, False)
+            batch = [PoliticalParties(**row) for row in df_to_dict(df)]
+            updateDatabase(self.model, batch)
 
     def getAll(self):
 

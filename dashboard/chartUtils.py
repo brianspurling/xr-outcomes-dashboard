@@ -228,7 +228,7 @@ def lineChart(data, x, y, tooltips):
 def createTooltip(labelValuePairs):
 
     html = ''
-    html += '<div style="background-color: ' + conf.WHITE + '">'
+    html += '<div class="tooltip_div">'
     html += '<table>'
     for labelValuePair in labelValuePairs:
 

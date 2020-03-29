@@ -79,6 +79,14 @@ span.kpi {
 
 /* Tooltips */
 
+.tooltip_div {
+  background-color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .tooltip_label {
     font-family: Crimson Text;
     font-size: 12pt;

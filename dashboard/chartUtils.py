@@ -247,7 +247,11 @@ def createTooltip(labelValuePairs):
             html += label
             html += '</td>'
             html += '<td class="tooltip_value">'
-            html += '@' + labelValuePair[1]
+            # a slash at the start can force a hardcoded value
+            if labelValuePair[1][0:1] == '/':
+                html += labelValuePair[1][1:]
+            else:
+                html += '@' + labelValuePair[1]
             html += '</td>'
             html += '</tr>'
         else:

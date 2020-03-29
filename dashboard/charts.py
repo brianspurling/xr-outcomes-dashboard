@@ -160,7 +160,8 @@ def laHexMapPlot():
     tooltips = [
         ('la_name'),
         ('Declared Date', 'declared_date_str'),
-        ('Net Zero Year', 'target_net_zero_year')]
+        ('Net Zero Year', 'target_net_zero_year'),
+        ('Source', '/Click for link to data source')]
 
     stickyTooltips = [
         ('la_name'),

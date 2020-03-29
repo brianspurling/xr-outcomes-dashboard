@@ -297,7 +297,7 @@ def socialMediaPlot(platform):
 
     df = pd.DataFrame(SocialMedia.objects.getAll())
 
-    df = df.groupby(['platform', 'date']).sum().reset_index()
+    df = df.groupby(['platform', 'date', 'date_str']).sum().reset_index()
 
     m = (df.platform == platform)
 

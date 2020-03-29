@@ -73,7 +73,7 @@ def stackedBar(data, x, y, ylabel, tooltips):
     return p
 
 
-def hexMap(data, tooltips):
+def hexMap(data, tooltips, stickyTooltips):
 
     glyph = HexTile(
         q="q",
@@ -84,7 +84,7 @@ def hexMap(data, tooltips):
         fill_color='color',
         line_color=conf.WHITE)
 
-    p = figure(tools='tap') #, tooltips=createTooltip(tooltips))
+    p = figure(tools='tap', tooltips=createTooltip(tooltips))
 
     div = Div(
         text = '''
@@ -94,7 +94,7 @@ def hexMap(data, tooltips):
 
     p.select(TapTool).callback = \
         CustomJS(
-            args = {'tp': createTooltip(tooltips), 'plot': p},
+            args = {'tp': createTooltip(stickyTooltips)},
             code = '''
                 if (cb_data.source.selected.indices.length > 0){
                     var selected_index = cb_data.source.selected.indices[0];
@@ -116,7 +116,9 @@ def hexMap(data, tooltips):
 
     p.match_aspect = True
 
-    p.add_glyph(data, glyph)
+    r = p.add_glyph(data, glyph)
+    r.selection_glyph = glyph
+    r.nonselection_glyph = glyph
 
     chartFormatter.formatPlot(p, hideAxes=True) #, setPlotSize=False)
 

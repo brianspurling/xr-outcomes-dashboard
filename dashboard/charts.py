@@ -160,12 +160,20 @@ def laHexMapPlot():
     tooltips = [
         ('la_name'),
         ('Declared Date', 'declared_date_str'),
+        ('Net Zero Year', 'target_net_zero_year')]
+
+    stickyTooltips = [
+        ('la_name'),
+        ('Declared Date', 'declared_date_str'),
         ('Net Zero Year', 'target_net_zero_year'),
         ('Source', 'source')]
 
     data = ColumnDataSource(df_LAs)
 
-    hexMap = chartUtils.hexMap(data, tooltips=tooltips)
+    hexMap = chartUtils.hexMap(
+        data,
+        tooltips=tooltips,
+        stickyTooltips=stickyTooltips)
 
     slider = DateSlider(
         start=datetime(2018, 1, 1),

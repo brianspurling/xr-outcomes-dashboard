@@ -3,15 +3,9 @@
 <head>
 
   {% load static %}
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id={% block ga_tracking_id_1 %}{% endblock %}"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
 
-    gtag('config', '{% block ga_tracking_id_2 %}{% endblock %}');
-  </script>
+  {% block google_analytics %}
+  {% endblock %}
 
   {% block meta %}
     <meta charset="utf-8">

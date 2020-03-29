@@ -4,6 +4,8 @@ environ.Env.read_env()  # reads the .env file
 
 HOURS_BETWEEN_DATA_REFRESH = env.float('HOURS_BETWEEN_DATA_REFRESH', default=24)
 
+GA_TRACKING_ID = env('GA_TRACKING_ID')
+
 START_DATE_OF_TIME_SERIES = '2019-01-01'
 
 LOGO_FILENAME = 'xr_logo.png'

@@ -3,8 +3,9 @@ from django.templatetags.static import static
 from django.conf import settings as conf
 
 from bokeh.plotting import figure, output_file, show
-from bokeh.models import DatetimeTickFormatter, NumeralTickFormatter, DataRange1d, Div
+from bokeh.models import DatetimeTickFormatter, NumeralTickFormatter, DataRange1d, Div, CustomJS, TapTool
 from bokeh.models.glyphs import HexTile
+from bokeh.layouts import row
 
 from datetime import datetime, date, timedelta
 import random
@@ -60,7 +61,7 @@ def stackedBar(data, x, y, ylabel, tooltips):
         width=0.7,
         line_color=conf.BAR_BORDER_COLOR,
         line_width=conf.BAR_BORDER_WIDTH,
-        fill_color=[conf.LEMON, conf.PINK])
+        fill_color=[conf.PINK, conf.LEMON])
 
     # Bespoke formatting for this chart
 
@@ -72,7 +73,7 @@ def stackedBar(data, x, y, ylabel, tooltips):
     return p
 
 
-def hexMap(data, tooltips):
+def hexMap(data, tooltips, stickyTooltips):
 
     glyph = HexTile(
         q="q",
@@ -83,15 +84,51 @@ def hexMap(data, tooltips):
         fill_color='color',
         line_color=conf.WHITE)
 
-    p = figure(tools=conf.TOOLS, tooltips=createTooltip(tooltips))
+    p = figure(tools='tap', tooltips=createTooltip(tooltips))
+
+    div = Div(
+        text = '''
+            <div id="tooltip" style="position: absolute; display: none">
+            </div>''',
+        name = 'tooltip')
+
+    p.select(TapTool).callback = \
+        CustomJS(
+            args = {'tp': createTooltip(stickyTooltips)},
+            code = '''
+                if (cb_data.source.selected.indices.length > 0){
+                    var selected_index = cb_data.source.selected.indices[0];
+                    var tooltip = document.getElementById("tooltip");
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = Number(cb_data.geometries.sx) - Number(800) + 'px';
+                    tooltip.style.top = Number(cb_data.geometries.sy) - Number(20) + 'px';
+
+                    tp = tp.replace('@la_name', cb_data.source.data.la_name[selected_index]);
+                    tp = tp.replace('@declared_date_str', cb_data.source.data.declared_date_str[selected_index]);
+                    tp = tp.replace('@target_net_zero_year', cb_data.source.data.target_net_zero_year[selected_index]);
+                    tp = tp.replace('@target_net_zero_year', cb_data.source.data.target_net_zero_year[selected_index]);
+                    if (cb_data.source.data.source[selected_index] != 'NaN') {
+                        tp = tp.replace('@source', '<a href="'+cb_data.source.data.source[selected_index]+'" target="_blank">link</a>');
+                    } else {
+                        tp = tp.replace('@source', 'no data');
+                    }
+
+                    tooltip.innerHTML = tp;
+                }
+                ''')
+    data.selected.js_on_change('indices', CustomJS(code = 'if (cb_obj.indices.length == 0) document.getElementById("tooltip").style.display = \"none\"'))
 
     p.match_aspect = True
 
-    p.add_glyph(data, glyph)
+    r = p.add_glyph(data, glyph)
+    r.selection_glyph = glyph
+    r.nonselection_glyph = glyph
 
     chartFormatter.formatPlot(p, hideAxes=True) #, setPlotSize=False)
 
-    return p
+    layout = row(p, div)
+
+    return layout
 
 
 def boxPlot(data,
@@ -197,7 +234,7 @@ def lineChart(data, x, y, tooltips):
 def createTooltip(labelValuePairs):
 
     html = ''
-    html += '<div style="background-color: ' + conf.WHITE + '">'
+    html += '<div class="tooltip_div">'
     html += '<table>'
     for labelValuePair in labelValuePairs:
 
@@ -214,7 +251,11 @@ def createTooltip(labelValuePairs):
             html += label
             html += '</td>'
             html += '<td class="tooltip_value">'
-            html += '@' + labelValuePair[1]
+            # a slash at the start can force a hardcoded value
+            if labelValuePair[1][0:1] == '/':
+                html += labelValuePair[1][1:]
+            else:
+                html += '@' + labelValuePair[1]
             html += '</td>'
             html += '</tr>'
         else:

@@ -47,6 +47,7 @@ def dashboard(request):
         'dashboard.html',
         {'script': script,
 
+         'ga_tracking_id': conf.GA_TRACKING_ID,
          'data_refresh_warning': conf.DATA_REFRESH_WARNING,
 
          'kpi_total_las': kpi_totalLAs,

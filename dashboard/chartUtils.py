@@ -61,7 +61,7 @@ def stackedBar(data, x, y, ylabel, tooltips):
         width=0.7,
         line_color=conf.BAR_BORDER_COLOR,
         line_width=conf.BAR_BORDER_WIDTH,
-        fill_color=[conf.LEMON, conf.PINK])
+        fill_color=[conf.PINK, conf.LEMON])
 
     # Bespoke formatting for this chart
 

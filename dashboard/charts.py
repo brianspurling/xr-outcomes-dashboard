@@ -128,7 +128,7 @@ def laHexMapPlot():
         declared_date_str.append(decDateStr)
 
         if decDateStr == 'Not declared':
-            color.append(conf.WHITE)
+            color.append(conf.LEMON)
         elif decDate >= declaredFromDate:
             color.append(conf.LEMON)
         else:
@@ -188,7 +188,7 @@ def laHexMapPlot():
             var declaredFromDate = cb_obj.value;
             for (var i = 0; i < source.data['declared_date'].length; i++) {
                 if (source.data['declared_date_str'][i] == 'Not declared') {
-                    source.data['color'][i] = 'white'
+                    source.data['color'][i] = '#F7EE6A'
                 } else if (source.data['declared_date'][i] > declaredFromDate) {
                     source.data['color'][i] = '#F7EE6A'
                 } else {

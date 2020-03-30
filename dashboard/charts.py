@@ -104,6 +104,7 @@ def laHexMapPlot():
     declared_date = []
     declared_date_str = []
     target_net_zero_year = []
+    source = []
     color = []
     for i in range(len(data['features'])):
         q.append(data['features'][i]['properties']['q'])
@@ -127,7 +128,7 @@ def laHexMapPlot():
         declared_date_str.append(decDateStr)
 
         if decDateStr == 'Not declared':
-            color.append(conf.WHITE)
+            color.append(conf.LEMON)
         elif decDate >= declaredFromDate:
             color.append(conf.LEMON)
         else:
@@ -137,6 +138,11 @@ def laHexMapPlot():
             list(df.loc[
                 (df.code == data['features'][i]['properties']['c']),
                 'target_net_zero_year'])[0])
+
+        source.append(
+            list(df.loc[
+                (df.code == data['features'][i]['properties']['c']),
+                'source'])[0])
 
     q = np.asarray(q)
     r = np.asarray(r)
@@ -148,16 +154,27 @@ def laHexMapPlot():
         'declared_date': declared_date,
         'declared_date_str': declared_date_str,
         'target_net_zero_year': target_net_zero_year,
+        'source': source,
         'color': color})
 
     tooltips = [
         ('la_name'),
         ('Declared Date', 'declared_date_str'),
-        ('Net Zero Year', 'target_net_zero_year')]
+        ('Net Zero Year', 'target_net_zero_year'),
+        ('Source', '/Click for link to data source')]
+
+    stickyTooltips = [
+        ('la_name'),
+        ('Declared Date', 'declared_date_str'),
+        ('Net Zero Year', 'target_net_zero_year'),
+        ('Source', 'source')]
 
     data = ColumnDataSource(df_LAs)
 
-    hexMap = chartUtils.hexMap(data, tooltips=tooltips)
+    hexMap = chartUtils.hexMap(
+        data,
+        tooltips=tooltips,
+        stickyTooltips=stickyTooltips)
 
     slider = DateSlider(
         start=datetime(2018, 1, 1),
@@ -171,7 +188,7 @@ def laHexMapPlot():
             var declaredFromDate = cb_obj.value;
             for (var i = 0; i < source.data['declared_date'].length; i++) {
                 if (source.data['declared_date_str'][i] == 'Not declared') {
-                    source.data['color'][i] = 'white'
+                    source.data['color'][i] = '#F7EE6A'
                 } else if (source.data['declared_date'][i] > declaredFromDate) {
                     source.data['color'][i] = '#F7EE6A'
                 } else {

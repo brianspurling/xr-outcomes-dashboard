@@ -4,6 +4,8 @@ environ.Env.read_env()  # reads the .env file
 
 HOURS_BETWEEN_DATA_REFRESH = env.float('HOURS_BETWEEN_DATA_REFRESH', default=24)
 
+GA_TRACKING_ID = env('GA_TRACKING_ID')
+
 START_DATE_OF_TIME_SERIES = '2019-01-01'
 
 LOGO_FILENAME = 'xr_logo.png'
@@ -61,7 +63,7 @@ PINK = '#ED9BC4'
 GREEN = '#14AA37'
 LEMON = '#F7EE6A'
 
-TOOLS = ''  # Or a list of tool names
+TOOLS = ''  # Default no Bokeh tools on the charts
 
 DASHBOARD_WIDTH = 1000
 

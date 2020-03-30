@@ -107,7 +107,11 @@ def hexMap(data, tooltips, stickyTooltips):
                     tp = tp.replace('@declared_date_str', cb_data.source.data.declared_date_str[selected_index]);
                     tp = tp.replace('@target_net_zero_year', cb_data.source.data.target_net_zero_year[selected_index]);
                     tp = tp.replace('@target_net_zero_year', cb_data.source.data.target_net_zero_year[selected_index]);
-                    tp = tp.replace('@source', '<a href="'+cb_data.source.data.source[selected_index]+'" target="_blank">link</a>');
+                    if (cb_data.source.data.source[selected_index] != 'NaN') {
+                        tp = tp.replace('@source', '<a href="'+cb_data.source.data.source[selected_index]+'" target="_blank">link</a>');
+                    } else {
+                        tp = tp.replace('@source', 'no data');
+                    }
 
                     tooltip.innerHTML = tp;
                 }

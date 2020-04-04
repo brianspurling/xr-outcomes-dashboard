@@ -3,7 +3,12 @@ from django.templatetags.static import static
 from django.conf import settings as conf
 
 from bokeh.layouts import row, column
-from bokeh.models import CustomJS, DateSlider, Select, ColumnDataSource, HoverTool, Div
+from bokeh.models import (CustomJS,
+                          DateSlider,
+                          Select,
+                          ColumnDataSource,
+                          HoverTool,
+                          Div)
 
 import pandas as pd
 import numpy as np
@@ -11,7 +16,13 @@ import os
 from datetime import datetime, timedelta, date
 import json
 
-from .models import Website, SocialMedia, PoliticalParties, LocalAuthorities, BookSales
+from .models import (Website,
+                     SocialMedia,
+                     PoliticalParties,
+                     LocalAuthorities,
+                     BookSales,
+                     ActionNetwork)
+
 from . import chartUtils
 from . import commentary
 
@@ -282,7 +293,7 @@ def laNetZeroPlot():
 def websitePlot():
 
     tooltips = chartUtils.createTooltip([
-        ('Date', 'date_str'),
+        ('date', 'date_str'),
         ('sessions', 'sessions_str')])
 
     data = ColumnDataSource(Website.objects.getAll())
@@ -427,6 +438,36 @@ def socialMediaPlot(platform):
     layout = column(select, lineChartLayout)
 
     return layout
+
+
+def actionNetworkActivistsPlot():
+
+    tooltips = chartUtils.createTooltip([
+        ('date', 'date_str'),
+        ('activists', 'activists_cum')])
+
+    df = pd.DataFrame(ActionNetwork.objects.getAll())
+    groupCols = ['date_str', 'date']
+    df = df.groupby(groupCols).agg({'activists': 'sum'}).reset_index()
+    df = df.sort_values('date')
+    df['activists_cum'] = df.activists.cumsum()
+
+    data = ColumnDataSource(df)
+
+    lineChart = chartUtils.lineChart(
+        data=data,
+        x='date',
+        y='activists_cum',
+        tooltips=tooltips)
+
+    commentaryDiv = commentary.getCommentary('action_network_activists')
+
+    backgroundImageDiv = chartUtils.backgroundImage()
+
+    layout = row(lineChart, commentaryDiv, backgroundImageDiv)
+
+    return layout
+
 
 def bookSalesPlot():
 

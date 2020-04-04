@@ -217,6 +217,12 @@ span.kpi {
   overflow: hidden;
 }
 
+.bk .commentary-missing {
+  color: #14AA37;
+  width: 430px;
+}
+
+
 .header-title {
     font-family: FucXed;
     font-size: 60px;

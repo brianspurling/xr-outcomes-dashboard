@@ -447,8 +447,8 @@ def actionNetworkActivistsPlot():
         ('activists', 'activists_cum')])
 
     df = pd.DataFrame(ActionNetwork.objects.getAll())
+    df['activists'] = df.subscribed_activists + df.unsubscribed_activists
     groupCols = ['date_str', 'date']
-    df = df.groupby(groupCols).agg({'activists': 'sum'}).reset_index()
     df = df.sort_values('date')
     df['activists_cum'] = df.activists.cumsum()
 

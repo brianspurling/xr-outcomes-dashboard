@@ -353,7 +353,8 @@ class ActionNetwork(models.Model):
     parse_dates = ['date']
 
     date = models.DateField()
-    activists = models.IntegerField()
+    subscribed_activists = models.IntegerField()
+    unsubscribed_activists = models.IntegerField()
 
     objects = ActionNetworkManager()
 

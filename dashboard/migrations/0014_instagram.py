@@ -19,5 +19,4 @@ class Migration(migrations.Migration):
                 ('likes', models.IntegerField(blank=True, null=True)),
             ],
         ),
-        migrations.RunPython(insert_instagram_commentary),
     ]

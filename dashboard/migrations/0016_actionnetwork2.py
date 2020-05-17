@@ -13,6 +13,7 @@ def insert_commentary(apps, schema_editor):
     commentary.save()
 
 
+
 class Migration(migrations.Migration):
 
     dependencies = [

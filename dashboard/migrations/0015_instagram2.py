@@ -2,6 +2,7 @@
 
 from django.db import migrations, models
 
+
 def insert_instagram_commentary(apps, schema_editor):
     Commentary = apps.get_model('dashboard', 'commentary')
 

@@ -2,15 +2,6 @@
 
 from django.db import migrations, models
 
-def insert_instagram_commentary(apps, schema_editor):
-    Commentary = apps.get_model('commentary')
-
-    instaCommentary = Commentary(
-        chart_name='instagram',
-        commentary_text='')
-
-    instaCommentary.save()
-
 
 class Migration(migrations.Migration):
 

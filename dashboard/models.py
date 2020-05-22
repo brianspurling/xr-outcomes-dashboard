@@ -321,6 +321,53 @@ class Website(models.Model):
         return genericRepr(self)
 
 
+class ActionNetworkManager(models.Manager):
+
+    def refreshFromCSV(self):
+        df = readCSV(self.model)
+        if df is not None:
+            batch = [ActionNetwork(**row) for row in df_to_dict(df)]
+            updateDatabase(self.model, batch)
+
+    def getAll(self):
+
+        if isDataStale(self.model):
+            self.refreshFromCSV()
+
+        dataQS = self.model.objects.order_by('date').values()
+        data = convertQuerySetToDict(dataQS)
+
+        data['date_str'] = []
+        data['daily_str'] = []
+        data['cumulative_str'] = []
+        for i in range(0, len(data['date'])):
+            data['date'][i] = \
+                datetime.combine(data['date'][i], datetime.min.time())
+            data['date_str'].append(
+                data['date'][i].strftime('%d %b %Y'))
+            data['daily_str'].append(
+                '{:,.0f}'.format(data['daily'][i]))
+            data['cumulative_str'].append(
+                '{:,.0f}'.format(data['cumulative'][i]))
+
+        return data
+
+
+class ActionNetwork(models.Model):
+
+    csv_filename = 'action_network'
+    parse_dates = ['date']
+
+    date = models.DateField()
+    daily = models.IntegerField()
+    cumulative = models.IntegerField()
+
+    objects = ActionNetworkManager()
+
+    def __repr__(self):
+        return genericRepr(self)
+
+
 class BookSalesManager(models.Manager):
 
     def refreshFromCSV(self):

@@ -23,6 +23,7 @@ def dashboard(request):
     p_partyNetZero = charts.partyNetZeroPlot()
     p_laNetZero = charts.laNetZeroPlot()
     p_website = charts.websitePlot()
+    p_actionNetworkActivists = charts.actionNetworkActivistsPlot()
     #p_bookSales = charts.bookSalesPlot()
 
     p_twitter = Panel(child=charts.socialMediaPlot('Twitter'), title='Twitter')
@@ -37,6 +38,7 @@ def dashboard(request):
         'la_net_zero_plot': p_laNetZero,
         'website_plot': p_website,
         'social_media_tabs': socialMediaTabs,
+        'action_network_activists_plot': p_actionNetworkActivists,
         #'book_sales_plot': p_bookSales
     }
 
@@ -72,6 +74,10 @@ def dashboard(request):
 
          'social_media_title': 'SOCIAL MEDIA',
          'social_media_tabs': plotDivs['social_media_tabs'],
+
+         'action_network_activists_title': 'ACTION NETWORK ACTIVISTS',
+         'action_network_activists_plot':
+            plotDivs['action_network_activists_plot'],
 
          #'book_sales_title': 'SALES OF ‘THIS IS NOT A DRILL‘',
          #'book_sales_plot': plotDivs['book_sales_plot']

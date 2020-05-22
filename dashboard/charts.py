@@ -18,6 +18,7 @@ import json
 
 from .models import (Website,
                      SocialMedia,
+                     Instagram,
                      PoliticalParties,
                      LocalAuthorities,
                      BookSales,
@@ -255,7 +256,6 @@ def partyNetZeroPlot():
 def laNetZeroPlot():
 
     df = pd.DataFrame(LocalAuthorities.objects.getAll())
-
     df = df.loc[~pd.isnull(df.target_net_zero_year)]
     df = df.groupby(['target_net_zero_year']).size()
     df = df.reset_index(name='count')
@@ -315,48 +315,16 @@ def websitePlot():
 
 def socialMediaPlot(platform):
 
-    df = pd.DataFrame(SocialMedia.objects.getAll())
-
-    df = df.groupby(['platform', 'date', 'date_str']).sum().reset_index()
-
-    m = (df.platform == platform)
-
-    # We've not doing the calcs below at the moment, because the daily data is
-    # too flakey to reverse calculate into cumulative data
-
-    # We either get daily figures or cumulative figures from source, so
-    # we calculate what we don't have
-    # if df.loc[m].follows_cum.sum() == 0:
-    #     df.loc[m, 'follows_cum'] = df.loc[m].follows.cumsum()
-    # if df.loc[m].likes_cum.sum() == 0:
-    #     df.loc[m, 'likes_cum'] = df.loc[m].likes.cumsum()
-    # if df.loc[m].views_cum.sum() == 0:
-    #     df.loc[m, 'views_cum'] = df.loc[m].views.cumsum()
-
-    # For the reverse of cumsum() we need to do a diff, then
-    # set first value to 0
-    # This is only valid if you have daily stats from _the beginning
-    # of time_ in the source data, otherwise the cumulation doesn't
-    # start from the right value and is incorrect. Hiding this data
-    # is controlled by the dashboard configuration
-    # if df.loc[m, 'follows'].sum() == 0 and df.loc[m, 'follows_cum'].sum() != 0:
-    #     df.loc[m, 'follows'] = df.loc[m].follows_cum.diff().fillna(0)
-    #     firstValIndex = list(df.index[m & (df.follows != 0) & ~pd.isnull(df.follows)])[0]
-    #     lastValIndex = list(df.index[m & (df.follows != 0) & ~pd.isnull(df.follows)])[-1]
-    #     df.loc[firstValIndex, 'follows'] = 0
-    #     df.loc[lastValIndex, 'follows'] = 0
-    # if df.loc[m, 'likes'].sum() == 0 and df.loc[m, 'likes_cum'].sum() != 0:
-    #     df.loc[m, 'likes'] = df.loc[m].likes_cum.diff().fillna(0)
-    #     firstValIndex = list(df.index[m & (df.likes != 0) & ~pd.isnull(df.likes)])[0]
-    #     lastValIndex = list(df.index[m & (df.likes != 0) & ~pd.isnull(df.likes)])[-1]
-    #     df.loc[firstValIndex, 'likes'] = 0
-    #     df.loc[lastValIndex, 'likes'] = 0
-    # if df.loc[m, 'views'].sum() == 0 and df.loc[m, 'views_cum'].sum() != 0:
-    #     df.loc[m, 'views'] = df.loc[m].views_cum.diff().fillna(0)
-    #     firstValIndex = list(df.index[m & (df.views != 0) & ~pd.isnull(df.views)])[0]
-    #     lastValIndex = list(df.index[m & (df.views != 0) & ~pd.isnull(df.views)])[-1]
-    #     df.loc[firstValIndex, 'views'] = 0
-    #     df.loc[lastValIndex, 'views'] = 0
+    # Instagram has its own source sheet / model. The rest all sit in a
+    # generic "SocialMedia" model
+    if platform == 'Instagram':
+        df = pd.DataFrame(Instagram.objects.getAll())
+        df = df.groupby(['date', 'date_str']).sum().reset_index()
+    else:
+        df = pd.DataFrame(SocialMedia.objects.getAll())
+        df = df.groupby(['platform', 'date', 'date_str']).sum().reset_index()
+        m = (df.platform == platform)
+        df = df.loc[m]
 
     # Bokeh doesn't seem to like taking value/label tuples
     # in a linked dropdown/plot, so we will set our col
@@ -368,8 +336,6 @@ def socialMediaPlot(platform):
                        'likes_cum': 'Cumulative likes over time',
                        'views_cum': 'Cumulative views over time'},
               inplace=True)
-
-    df = df.loc[m]
 
     for metric in conf.SOCIAL_MEDIA_DROPDOWN_OPTIONS[platform.lower()]:
         df[metric.replace(' ', '') + '_str'] = df[metric].map('{:,.0f}'.format)

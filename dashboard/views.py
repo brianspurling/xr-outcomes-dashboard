@@ -29,7 +29,12 @@ def dashboard(request):
     p_twitter = Panel(child=charts.socialMediaPlot('Twitter'), title='Twitter')
     p_facebook = Panel(child=charts.socialMediaPlot('Facebook'), title='Facebook')
     p_youTube = Panel(child=charts.socialMediaPlot('YouTube'), title='YouTube')
-    socialMediaTabs = Tabs(tabs=[p_twitter, p_facebook, p_youTube], css_classes=['chart_tabs'])
+    p_instagram = Panel(child=charts.socialMediaPlot('Instagram'), title='Instagram')
+    socialMediaTabs = Tabs(tabs=[
+        p_twitter,
+        p_facebook,
+        p_youTube,
+        p_instagram], css_classes=['chart_tabs'])
 
     plots = {
         'la_decs_plot': p_laDecs,

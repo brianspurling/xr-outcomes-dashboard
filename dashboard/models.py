@@ -276,6 +276,47 @@ class SocialMedia(models.Model):
         return genericRepr(self)
 
 
+class InstagramManager(models.Manager):
+
+    def refreshFromCSV(self):
+        df = readCSV(self.model)
+        if df is not None:
+            batch = [Instagram(**row) for row in df_to_dict(df)]
+            updateDatabase(self.model, batch)
+
+    def getAll(self):
+
+        if isDataStale(self.model):
+            self.refreshFromCSV()
+
+        dataQS = self.model.objects.order_by('date').values()
+        data = convertQuerySetToDict(dataQS)
+
+        data['date_str'] = []
+        for i in range(0, len(data['date'])):
+            data['date'][i] = \
+                datetime.combine(data['date'][i], datetime.min.time())
+            data['date_str'].append(
+                data['date'][i].strftime('%d %b %Y'))
+
+        return data
+
+
+class Instagram(models.Model):
+
+    csv_filename = 'instagram'
+    parse_dates = ['date']
+
+    date = models.DateField()
+    follows = models.IntegerField(blank=True, null=True)
+    likes = models.IntegerField(blank=True, null=True)
+
+    objects = InstagramManager()
+
+    def __repr__(self):
+        return genericRepr(self)
+
+
 class WebsiteManager(models.Manager):
 
     def refreshFromCSV(self):

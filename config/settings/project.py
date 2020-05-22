@@ -37,6 +37,11 @@ SOCIAL_MEDIA_DROPDOWN_OPTIONS = {
         # 'Cumulative views over time'
         'Daily follows',
         'Daily views'],
+    'instagram': [
+        # 'Cumulative follows over time'
+        # 'Cumulative views over time'
+        'Daily follows',
+        'Daily likes'],
 }
 
 BG_IMG_URLS = [

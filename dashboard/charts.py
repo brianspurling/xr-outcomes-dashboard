@@ -444,20 +444,18 @@ def actionNetworkActivistsPlot():
 
     tooltips = chartUtils.createTooltip([
         ('date', 'date_str'),
-        ('activists', 'activists_cum')])
+        ('activists', 'cumulative_str')])
 
     df = pd.DataFrame(ActionNetwork.objects.getAll())
-    df['activists'] = df.subscribed_activists + df.unsubscribed_activists
     groupCols = ['date_str', 'date']
     df = df.sort_values('date')
-    df['activists_cum'] = df.activists.cumsum()
 
     data = ColumnDataSource(df)
 
     lineChart = chartUtils.lineChart(
         data=data,
         x='date',
-        y='activists_cum',
+        y='cumulative',
         tooltips=tooltips)
 
     commentaryDiv = commentary.getCommentary('action_network_activists')

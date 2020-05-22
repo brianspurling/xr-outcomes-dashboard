@@ -338,11 +338,17 @@ class ActionNetworkManager(models.Manager):
         data = convertQuerySetToDict(dataQS)
 
         data['date_str'] = []
+        data['daily_str'] = []
+        data['cumulative_str'] = []
         for i in range(0, len(data['date'])):
             data['date'][i] = \
                 datetime.combine(data['date'][i], datetime.min.time())
             data['date_str'].append(
                 data['date'][i].strftime('%d %b %Y'))
+            data['daily_str'].append(
+                '{:,.0f}'.format(data['daily'][i]))
+            data['cumulative_str'].append(
+                '{:,.0f}'.format(data['cumulative'][i]))
 
         return data
 
@@ -353,8 +359,8 @@ class ActionNetwork(models.Model):
     parse_dates = ['date']
 
     date = models.DateField()
-    subscribed_activists = models.IntegerField()
-    unsubscribed_activists = models.IntegerField()
+    daily = models.IntegerField()
+    cumulative = models.IntegerField()
 
     objects = ActionNetworkManager()
 

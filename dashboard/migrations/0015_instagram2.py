@@ -13,6 +13,7 @@ def insert_instagram_commentary(apps, schema_editor):
     instaCommentary.save()
 
 
+
 class Migration(migrations.Migration):
 
     dependencies = [

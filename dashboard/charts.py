@@ -37,7 +37,7 @@ def laDeclarationsPlot():
     df = df.groupby(['dec_month']).agg({'dec_yes': 'sum'})
     months = pd.date_range(
         start=df.index.min(),
-        end=df.index.max(),
+        end=datetime.today(),
         freq=pd.offsets.MonthBegin(1))
     df = df.reindex(months)
     df.dec_yes.fillna(0, inplace=True)

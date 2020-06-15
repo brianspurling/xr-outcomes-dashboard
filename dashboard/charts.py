@@ -313,7 +313,7 @@ def websitePlot():
     return layout
 
 
-def socialMediaPlot(platform):
+def socialMediaPlot(platform, subtitle):
 
     # Instagram has its own source sheet / model. The rest all sit in a
     # generic "SocialMedia" model
@@ -371,6 +371,10 @@ def socialMediaPlot(platform):
 
         p.add_tools(HoverTool(renderers=[lines[i]], tooltips=tooltips))
 
+    subtitle = Div(
+        text=subtitle,
+        width=conf.PLOT_WIDTH,
+        css_classes=["tabSubTitle"])
 
     select = Select(
         width=conf.DROPDOWN_LIST_WIDTH,
@@ -401,7 +405,7 @@ def socialMediaPlot(platform):
 
     lineChartLayout = row(p, commentaryDiv, backgroundImageDiv)
 
-    layout = column(select, lineChartLayout)
+    layout = column(subtitle, select, lineChartLayout)
 
     return layout
 

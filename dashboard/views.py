@@ -26,10 +26,10 @@ def dashboard(request):
     p_actionNetworkActivists = charts.actionNetworkActivistsPlot()
     #p_bookSales = charts.bookSalesPlot()
 
-    p_twitter = Panel(child=charts.socialMediaPlot('Twitter'), title='Twitter')
-    p_facebook = Panel(child=charts.socialMediaPlot('Facebook'), title='Facebook')
-    p_youTube = Panel(child=charts.socialMediaPlot('YouTube'), title='YouTube')
-    p_instagram = Panel(child=charts.socialMediaPlot('Instagram'), title='Instagram')
+    p_twitter = Panel(child=charts.socialMediaPlot('Twitter', subtitle='@ExtinctionR & @XRebellionUK'), title='Twitter')
+    p_facebook = Panel(child=charts.socialMediaPlot('Facebook', subtitle='@ExtinctionRebellion & @XRebellionUK'), title='Facebook')
+    p_youTube = Panel(child=charts.socialMediaPlot('YouTube', subtitle='Global Account'), title='YouTube')
+    p_instagram = Panel(child=charts.socialMediaPlot('Instagram', subtitle='@ExtinctionRebellion'), title='Instagram')
     socialMediaTabs = Tabs(tabs=[
         p_twitter,
         p_facebook,
@@ -62,25 +62,25 @@ def dashboard(request):
          'kpi_las_with_2030_net_zero': kpi_laNetZero2030,
          'kpi_max_website_users': kpis_maxDailyWebsiteUsers,
 
-         'la_decs_title': 'LOCAL AUTHORITIES DECLARING A CLIMATE EMERGENCY',
+         'la_decs_title': 'UK LOCAL AUTHORITIES DECLARING A CLIMATE EMERGENCY',
          'la_decs_plot': plotDivs['la_decs_plot'],
 
-         'la_hex_map_title': 'MAP OF DECLARED LOCAL AUTHORITIES',
+         'la_hex_map_title': 'MAP OF DECLARED LOCAL AUTHORITIES (ENGLAND & WALES)',
          'la_hex_map_plot': plotDivs['la_hex_map_plot'],
 
-         'party_party_net_zero_title': 'POLITICAL NET ZERO TARGETS',
+         'party_party_net_zero_title': 'UK POLITICAL PARTIES'' NET ZERO TARGETS',
          'party_party_net_zero_plot': plotDivs['party_net_zero_plot'],
 
-         'la_net_zero_title': 'LA NET ZERO TARGETS',
+         'la_net_zero_title': 'UK LOCAL AUTHORITY NET ZERO TARGETS',
          'la_net_zero_plot': plotDivs['la_net_zero_plot'],
 
-         'website_title': 'WEBSITE VISITS',
+         'website_title': 'REBELLION.EARTH VISITS',
          'website_plot': plotDivs['website_plot'],
 
          'social_media_title': 'SOCIAL MEDIA',
          'social_media_tabs': plotDivs['social_media_tabs'],
 
-         'action_network_activists_title': 'ACTION NETWORK ACTIVISTS',
+         'action_network_activists_title': 'UK ACTION NETWORK ACTIVISTS',
          'action_network_activists_plot':
             plotDivs['action_network_activists_plot'],
 

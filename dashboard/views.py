@@ -68,7 +68,7 @@ def dashboard(request):
          'la_hex_map_title': 'MAP OF DECLARED LOCAL AUTHORITIES (ENGLAND & WALES)',
          'la_hex_map_plot': plotDivs['la_hex_map_plot'],
 
-         'party_party_net_zero_title': 'UK POLITICAL PARTIES'' NET ZERO TARGETS',
+         'party_party_net_zero_title': 'NET ZERO TARGET BY UK POLITICAL PARTY',
          'party_party_net_zero_plot': plotDivs['party_net_zero_plot'],
 
          'la_net_zero_title': 'UK LOCAL AUTHORITY NET ZERO TARGETS',

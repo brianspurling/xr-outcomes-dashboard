@@ -80,7 +80,7 @@ def dashboard(request):
          'social_media_title': 'SOCIAL MEDIA',
          'social_media_tabs': plotDivs['social_media_tabs'],
 
-         'action_network_activists_title': 'UK ACTION NETWORK ACTIVISTS',
+         'action_network_activists_title': 'UK MEMBERSHIP (ACTION NETWORK)',
          'action_network_activists_plot':
             plotDivs['action_network_activists_plot'],
 

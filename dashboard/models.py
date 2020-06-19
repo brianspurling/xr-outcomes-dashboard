@@ -308,7 +308,7 @@ class Instagram(models.Model):
     parse_dates = ['date']
 
     date = models.DateField()
-    follows = models.IntegerField(blank=True, null=True)
+    follows_cum = models.IntegerField(blank=True, null=True)
     likes = models.IntegerField(blank=True, null=True)
 
     objects = InstagramManager()

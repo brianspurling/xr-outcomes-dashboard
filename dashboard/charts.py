@@ -329,8 +329,7 @@ def socialMediaPlot(platform):
     # Bokeh doesn't seem to like taking value/label tuples
     # in a linked dropdown/plot, so we will set our col
     # headings to user-friendly terms  now
-    df.rename(columns={'follows': 'Daily follows',
-                       'likes': 'Daily likes',
+    df.rename(columns={'likes': 'Daily likes',
                        'views': 'Daily views',
                        'follows_cum': 'Cumulative follows over time',
                        'likes_cum': 'Cumulative likes over time',

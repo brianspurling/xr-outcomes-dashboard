@@ -24,23 +24,15 @@ MISSING_COMMENTARY_TEXT = 'Commentary for this chart is missing'
 SOCIAL_MEDIA_DROPDOWN_OPTIONS = {
     'twitter': [
         'Cumulative follows over time',
-        # 'Cumulative likes over time',
-        #'Daily follows',
         'Daily likes'],
     'facebook': [
         'Cumulative follows over time',
-        # 'Cumulative likes over time'
-        #'Daily follows',
         'Daily likes'],
     'youtube': [
-        # 'Cumulative follows over time'
-        # 'Cumulative views over time'
-        'Daily follows',
+        'Cumulative follows over time',
         'Daily views'],
     'instagram': [
-        # 'Cumulative follows over time'
-        # 'Cumulative views over time'
-        'Daily follows',
+        'Cumulative follows over time',
         'Daily likes'],
 }
 

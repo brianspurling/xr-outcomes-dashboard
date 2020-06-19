@@ -122,8 +122,8 @@ span.kpi {
     font-family: Crimson Text;
 }
 
-/* Sometimes we put a sub-set of the inside tabs, and we use bokeh tabs
-   for this, so we need to override bokeh's sytling */
+/* Sometimes we put a sub-set of the charts inside tabs, and we use bokeh tabs
+   for this, so we need to override bokeh's syling */
 
 .bk-root .bk-tabs-header .bk-tab {
     background-color: #14AA37;
@@ -146,6 +146,14 @@ span.kpi {
     color: black;
     font-family: FucXed;
     font-size: 25pt;
+}
+/* additional (bespoke) subtitle within tab panel */
+.bk .tabSubTitle {
+    color: black;
+    font-weight: lighter;
+    font-family: FucXed;
+    font-size: 15pt;
+    margin-top: 10px
 }
 
 /* Dropdown List Styling */

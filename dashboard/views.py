@@ -26,10 +26,10 @@ def dashboard(request):
     p_actionNetworkActivists = charts.actionNetworkActivistsPlot()
     #p_bookSales = charts.bookSalesPlot()
 
-    p_twitter = Panel(child=charts.socialMediaPlot('Twitter', subtitle='@ExtinctionR & @XRebellionUK'), title='Twitter')
+    p_instagram = Panel(child=charts.socialMediaPlot('Instagram', subtitle='@ExtinctionRebellion'), title='Instagram')
     p_facebook = Panel(child=charts.socialMediaPlot('Facebook', subtitle='@ExtinctionRebellion'), title='Facebook')
     p_youTube = Panel(child=charts.socialMediaPlot('YouTube', subtitle='Global Account'), title='YouTube')
-    p_instagram = Panel(child=charts.socialMediaPlot('Instagram', subtitle='@ExtinctionRebellion'), title='Instagram')
+    p_twitter = Panel(child=charts.socialMediaPlot('Twitter', subtitle='@ExtinctionR & @XRebellionUK'), title='Twitter')
     socialMediaTabs = Tabs(tabs=[
         p_twitter,
         p_facebook,

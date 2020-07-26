@@ -31,10 +31,11 @@ def dashboard(request):
     p_youTube = Panel(child=charts.socialMediaPlot('YouTube', subtitle='Global Account'), title='YouTube')
     p_twitter = Panel(child=charts.socialMediaPlot('Twitter', subtitle='@ExtinctionR & @XRebellionUK'), title='Twitter')
     socialMediaTabs = Tabs(tabs=[
-        p_twitter,
+        p_instagram,
         p_facebook,
+        p_twitter,
         p_youTube,
-        p_instagram], css_classes=['chart_tabs'])
+        ], css_classes=['chart_tabs'])
 
     plots = {
         'la_decs_plot': p_laDecs,

@@ -112,6 +112,11 @@ def hexMap(data, tooltips, stickyTooltips):
                     } else {
                         tp = tp.replace('@source', 'no data');
                     }
+                    if (cb_data.source.data.action_plan[selected_index] != 'NaN') {
+                        tp = tp.replace('@action_plan', '<a href="'+cb_data.source.data.action_plan[selected_index]+'" target="_blank">link</a>');
+                    } else {
+                        tp = tp.replace('@action_plan', 'no data');
+                    }
 
                     tooltip.innerHTML = tp;
                 }

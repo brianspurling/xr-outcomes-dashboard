@@ -170,6 +170,7 @@ class LocalAuthorities(models.Model):
     declaration_date = models.DateField(blank=True, null=True)
     target_net_zero_year = models.IntegerField(blank=True, null=True)
     source = models.TextField(blank=True, null=True)
+    action_plan = models.TextField(blank=True, null=True)
 
     objects = LocalAuthoritiesManager()
 

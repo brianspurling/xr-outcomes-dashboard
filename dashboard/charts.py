@@ -126,17 +126,17 @@ def laHexMapPlot():
 
         la_name.append(
             list(df.loc[
-                (df.code == data['features'][i]['properties']['c']),
-                'xr_la_name'])[0])
+                 (df.code == data['features'][i]['properties']['c']),
+                 'xr_la_name'])[0])
 
         decDate = \
             list(df.loc[
-                (df.code == data['features'][i]['properties']['c']),
-                'declaration_date'])[0]
+                 (df.code == data['features'][i]['properties']['c']),
+                 'declaration_date'])[0]
         decDateStr = \
             list(df.loc[
-                (df.code == data['features'][i]['properties']['c']),
-                'declaration_date_str'])[0]
+                 (df.code == data['features'][i]['properties']['c']),
+                 'declaration_date_str'])[0]
 
         declared_date.append(decDate)
         declared_date_str.append(decDateStr)

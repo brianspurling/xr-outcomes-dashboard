@@ -74,7 +74,7 @@ def dashboard(request):
          'la_net_zero_title': 'UK LOCAL AUTHORITY NET ZERO TARGETS',
          'la_net_zero_plot': plotDivs['la_net_zero_plot'],
 
-         'website_title': 'REBELLION.EARTH VISITS',
+         'website_title': 'EXTINCTIONREBELLION.UK',
          'website_plot': plotDivs['website_plot'],
 
          'social_media_title': 'SOCIAL MEDIA',

@@ -51,7 +51,7 @@ def readCSV(model):
             parse_dates=model.parse_dates,
             dayfirst=True)
     except (FileNotFoundError, PermissionError) as e:
-        print(model.__name__ + ': ERROR opening file. Refreshed aborted')
+        print(model.__name__ + ': ERROR opening file. Refresh aborted')
         conf.DATA_REFRESH_WARNING = True
         df = None
 
@@ -80,7 +80,7 @@ def updateDatabase(model, batch):
             # full_clean calls clean_fields(), clean(), validate_unique()
             o.full_clean()
     except ValidationError as e:
-        print(model.__name__ + ': ERROR in data. Refreshed aborted: ' +
+        print(model.__name__ + ': ERROR in data. Refresh aborted: ' +
               str(e.message_dict))
         conf.DATA_REFRESH_WARNING = True
     else:
@@ -271,6 +271,47 @@ class SocialMedia(models.Model):
     views_cum = models.IntegerField(blank=True, null=True)
 
     objects = SocialMediaManager()
+
+    def __repr__(self):
+        return genericRepr(self)
+
+
+class FacebookManager(models.Manager):
+
+    def refreshFromCSV(self):
+        df = readCSV(self.model)
+        if df is not None:
+            batch = [Facebook(**row) for row in df_to_dict(df)]
+            updateDatabase(self.model, batch)
+
+    def getAll(self):
+
+        if isDataStale(self.model):
+            self.refreshFromCSV()
+
+        dataQS = self.model.objects.order_by('date').values()
+        data = convertQuerySetToDict(dataQS)
+
+        data['date_str'] = []
+        for i in range(0, len(data['date'])):
+            data['date'][i] = \
+                datetime.combine(data['date'][i], datetime.min.time())
+            data['date_str'].append(
+                data['date'][i].strftime('%d %b %Y'))
+
+        return data
+
+
+class Facebook(models.Model):
+
+    csv_filename = 'facebook'
+    parse_dates = ['date']
+
+    date = models.DateField()
+    follows_cum = models.IntegerField(blank=True, null=True)
+    likes = models.IntegerField(blank=True, null=True)
+
+    objects = FacebookManager()
 
     def __repr__(self):
         return genericRepr(self)

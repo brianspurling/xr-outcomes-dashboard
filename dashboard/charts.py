@@ -19,6 +19,7 @@ import json
 from .models import (Website,
                      SocialMedia,
                      Instagram,
+                     Facebook,
                      PoliticalParties,
                      LocalAuthorities,
                      BookSales,
@@ -315,10 +316,13 @@ def websitePlot():
 
 def socialMediaPlot(platform, subtitle):
 
-    # Instagram has its own source sheet / model. The rest all sit in a
-    # generic "SocialMedia" model
+    # Instagram & Facebook have their own source sheet / model.
+    # The rest all sit in a generic "SocialMedia" model
     if platform == 'Instagram':
         df = pd.DataFrame(Instagram.objects.getAll())
+        df = df.groupby(['date', 'date_str']).sum().reset_index()
+    elif platform == 'Facebook':
+        df = pd.DataFrame(Facebook.objects.getAll())
         df = df.groupby(['date', 'date_str']).sum().reset_index()
     else:
         df = pd.DataFrame(SocialMedia.objects.getAll())

@@ -26,15 +26,16 @@ def dashboard(request):
     p_actionNetworkActivists = charts.actionNetworkActivistsPlot()
     #p_bookSales = charts.bookSalesPlot()
 
-    p_twitter = Panel(child=charts.socialMediaPlot('Twitter', subtitle='@ExtinctionR & @XRebellionUK'), title='Twitter')
-    p_facebook = Panel(child=charts.socialMediaPlot('Facebook', subtitle='@ExtinctionRebellion & @XRebellionUK'), title='Facebook')
-    p_youTube = Panel(child=charts.socialMediaPlot('YouTube', subtitle='Global Account'), title='YouTube')
     p_instagram = Panel(child=charts.socialMediaPlot('Instagram', subtitle='@ExtinctionRebellion'), title='Instagram')
+    p_facebook = Panel(child=charts.socialMediaPlot('Facebook', subtitle='@ExtinctionRebellion'), title='Facebook')
+    p_youTube = Panel(child=charts.socialMediaPlot('YouTube', subtitle='Global Account'), title='YouTube')
+    p_twitter = Panel(child=charts.socialMediaPlot('Twitter', subtitle='@ExtinctionR & @XRebellionUK'), title='Twitter')
     socialMediaTabs = Tabs(tabs=[
-        p_twitter,
+        p_instagram,
         p_facebook,
+        p_twitter,
         p_youTube,
-        p_instagram], css_classes=['chart_tabs'])
+        ], css_classes=['chart_tabs'])
 
     plots = {
         'la_decs_plot': p_laDecs,
@@ -74,7 +75,7 @@ def dashboard(request):
          'la_net_zero_title': 'UK LOCAL AUTHORITY NET ZERO TARGETS',
          'la_net_zero_plot': plotDivs['la_net_zero_plot'],
 
-         'website_title': 'REBELLION.EARTH VISITS',
+         'website_title': 'EXTINCTIONREBELLION.UK',
          'website_plot': plotDivs['website_plot'],
 
          'social_media_title': 'SOCIAL MEDIA',

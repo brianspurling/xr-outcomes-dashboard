@@ -118,6 +118,7 @@ def laHexMapPlot():
     declared_date_str = []
     target_net_zero_year = []
     source = []
+    action_plan = []
     color = []
     for i in range(len(data['features'])):
         q.append(data['features'][i]['properties']['q'])
@@ -125,17 +126,17 @@ def laHexMapPlot():
 
         la_name.append(
             list(df.loc[
-                (df.code == data['features'][i]['properties']['c']),
-                'xr_la_name'])[0])
+                 (df.code == data['features'][i]['properties']['c']),
+                 'xr_la_name'])[0])
 
         decDate = \
             list(df.loc[
-                (df.code == data['features'][i]['properties']['c']),
-                'declaration_date'])[0]
+                 (df.code == data['features'][i]['properties']['c']),
+                 'declaration_date'])[0]
         decDateStr = \
             list(df.loc[
-                (df.code == data['features'][i]['properties']['c']),
-                'declaration_date_str'])[0]
+                 (df.code == data['features'][i]['properties']['c']),
+                 'declaration_date_str'])[0]
 
         declared_date.append(decDate)
         declared_date_str.append(decDateStr)
@@ -157,6 +158,11 @@ def laHexMapPlot():
                 (df.code == data['features'][i]['properties']['c']),
                 'source'])[0])
 
+        action_plan.append(
+            list(df.loc[
+                (df.code == data['features'][i]['properties']['c']),
+                'action_plan'])[0])
+
     q = np.asarray(q)
     r = np.asarray(r)
 
@@ -168,19 +174,22 @@ def laHexMapPlot():
         'declared_date_str': declared_date_str,
         'target_net_zero_year': target_net_zero_year,
         'source': source,
+        'action_plan': action_plan,
         'color': color})
 
     tooltips = [
         ('la_name'),
         ('Declared Date', 'declared_date_str'),
         ('Net Zero Year', 'target_net_zero_year'),
-        ('Source', '/Click for link to data source')]
+        ('Source', '/Click for link to data source'),
+        ('Action Plan', '/Click for link to action plan'),]
 
     stickyTooltips = [
         ('la_name'),
         ('Declared Date', 'declared_date_str'),
         ('Net Zero Year', 'target_net_zero_year'),
-        ('Source', 'source')]
+        ('Source', 'source'),
+        ('Action Plan', 'action_plan')]
 
     data = ColumnDataSource(df_LAs)
 

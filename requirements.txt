@@ -60,7 +60,7 @@ pillow==7.0.0
     # via
     #   -r requirements.in
     #   bokeh
-psycopg2-binary==2.8.4
+psycopg2-binary==2.9.5
     # via -r requirements.in
 pyparsing==2.4.6
     # via

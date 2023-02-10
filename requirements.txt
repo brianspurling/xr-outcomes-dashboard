@@ -27,7 +27,7 @@ docutils==0.15.2
     # via
     #   -r requirements.in
     #   botocore
-fsspec==0.7.0
+fsspec==2021.07.0
     # via
     #   -r requirements.in
     #   s3fs

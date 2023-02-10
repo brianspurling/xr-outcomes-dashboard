@@ -45,7 +45,7 @@ markupsafe==1.1.1
     # via
     #   -r requirements.in
     #   jinja2
-numpy==1.18.1
+numpy==1.24.2
     # via
     #   -r requirements.in
     #   bokeh
@@ -54,7 +54,7 @@ packaging==20.3
     # via
     #   -r requirements.in
     #   bokeh
-pandas==1.0.1
+pandas==1.5.3
     # via -r requirements.in
 pillow==7.0.0
     # via

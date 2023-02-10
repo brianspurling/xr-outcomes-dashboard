@@ -54,6 +54,10 @@ In addition, you need to create the necessary commentary entries in the Django C
 - Create a superuser (`python manage.py createsuperuser`)
 - Log in http://localhost:8000/admin
 
+8. Check the front end
+
+http://localhost:8000/
+
 ## Deploying Changes To Staging
 
 1. Ask to be added as a contributor to the staging Heroku
